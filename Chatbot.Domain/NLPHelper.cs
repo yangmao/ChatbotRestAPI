@@ -11,10 +11,9 @@ namespace Chatbot.Domain
         public static string[] BagOfWords(string sentence, string[] words)
         {
             var bag = new string[words.Length];
-            char[] delims = new char[] { ' ', ',', '.', ':','!','?' };
-            string[] s_words = sentence.Split(delims, StringSplitOptions.RemoveEmptyEntries);
-            var stemmer =  new EnglishStemmer();
-            s_words = stemmer.GetSteamWords(s_words);
+
+            var s_words = Tokenize(sentence);
+            s_words = Stemmerize(s_words);
             foreach (var se in s_words)
             {
                 var i = 0;
@@ -28,6 +27,17 @@ namespace Chatbot.Domain
                 }
             }
             return bag;
+        }
+        public static string[] Tokenize(string sentence)
+        {
+            char[] delims = new char[] { ' ', ',', '.', ':', '!', '?' };
+            return sentence.Split(delims, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        public static string[] Stemmerize(string[] words)
+        {
+            var stemmer = new EnglishStemmer();
+            return stemmer.GetSteamWords(words);
         }
     }
 }

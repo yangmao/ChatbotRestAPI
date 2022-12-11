@@ -1,6 +1,7 @@
 ﻿using Chatbot.Domain.Interface;
 using Chatbot.Domain.Models;
 using Chatbot.Domain.Ports;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,15 +19,23 @@ namespace Chatbot.Domain.concrete
             return await _intentRepository.GetIntents();
         }
 
-        public Task<List<string>> GetLables()
+        public Task<string[]> GetLables()
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task<List<string>> GetWords()
+        public async Task<string[]> GetWords()
         {
-            var intents = await  GetIntents();
-            return null;
+            var intents = await GetIntents();
+            string wrds = string.Empty;
+            foreach (var intent in intents)
+            {
+                wrds += " " + intent;
+            }
+            var words = NLPHelper.Tokenize(wrds);
+            words = NLPHelper.Stemmerize(words);
+            Array.Sort(words);
+            return words;
         }
     }
 }

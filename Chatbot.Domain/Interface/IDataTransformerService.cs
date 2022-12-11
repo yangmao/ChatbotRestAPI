@@ -6,9 +6,9 @@ namespace Chatbot.Domain.Interface
 {
     public interface IDataTransformerService
     {
-         Task<IEnumerable<Intent>> GetIntents();
-         Task<List<string>> GetWords();
+        Task<IEnumerable<Intent>> GetIntents();
+        Task<string[]> GetWords();
 
-        Task<List<string>> GetLables();
+        Task<string[]> GetLables();
     }
 }
