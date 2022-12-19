@@ -1,7 +1,9 @@
-﻿namespace Chatbot.Domain.Interface
+﻿using System.Threading.Tasks;
+
+namespace Chatbot.Domain.Interface
 {
     public interface IConsultService
     {
-        public string Consult(string query);
+        public Task<string[]> Consult(string query);
     }
 }

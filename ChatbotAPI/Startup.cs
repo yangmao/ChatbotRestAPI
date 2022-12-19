@@ -24,9 +24,11 @@ namespace ChatbotAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCustomDapperContext();
-            services.AddScoped<IConsultService, ConsultService>();
             services.AddScoped<IDataTransformerService>(x =>
-                new DataTransformerService(services.BuildServiceProvider().GetService<IIntentRepository>()));
+               new DataTransformerService(services.BuildServiceProvider().GetService<IIntentRepository>()));
+            services.AddScoped<IConsultService>(x =>
+               new ConsultService(services.BuildServiceProvider().GetService<IDataTransformerService>()));
+           
             services.AddControllers();
         }
 

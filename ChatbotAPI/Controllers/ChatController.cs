@@ -1,7 +1,9 @@
 ﻿
 using Chatbot.Domain;
+using Chatbot.Domain.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace ChatbotAPI.Controllers
 {
@@ -10,14 +12,16 @@ namespace ChatbotAPI.Controllers
     public class ChatController : ControllerBase
     {
         private readonly ILogger<ChatController> _logger;
-        public ChatController(ILogger<ChatController> logger)
+        private readonly IConsultService _consultService;
+        public ChatController(IConsultService consultService, ILogger<ChatController> logger)
         {
             _logger = logger;
+            _consultService = consultService;
         }
-        public string Chat(string msg)
+        public async Task<string[]> Chat(string msg)
         {
-            var consultant = new ConsultService();
-            return consultant.Consult(msg);
+          
+            return await _consultService.Consult(msg);
         }
     }
 }

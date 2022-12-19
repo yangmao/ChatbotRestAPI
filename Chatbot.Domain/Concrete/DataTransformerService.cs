@@ -19,9 +19,17 @@ namespace Chatbot.Domain.concrete
             return await _intentRepository.GetIntents();
         }
 
-        public Task<string[]> GetLables()
+        public async Task<string[]> GetLables()
         {
-            throw new System.NotImplementedException();
+            var intents = await GetIntents();
+            var labels = new List<string>();
+            foreach (var intent in intents)
+            {
+                labels.Add(intent.Tag);
+            }
+            var lbls = labels.ToArray();
+            Array.Sort(lbls);
+            return lbls;
         }
 
         public async Task<string[]> GetWords()
@@ -30,7 +38,7 @@ namespace Chatbot.Domain.concrete
             string wrds = string.Empty;
             foreach (var intent in intents)
             {
-                wrds += " " + intent;
+                wrds += " " + intent.Pattern;
             }
             var words = NLPHelper.Tokenize(wrds);
             words = NLPHelper.Stemmerize(words);
