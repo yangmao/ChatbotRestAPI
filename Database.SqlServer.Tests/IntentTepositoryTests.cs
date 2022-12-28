@@ -2,7 +2,6 @@ using Database.SQLServer;
 using Database.SQLServer.Repositories;
 using Microsoft.Extensions.Configuration;
 using Moq;
-using System.ComponentModel.DataAnnotations;
 
 namespace Database.SqlServer.Tests
 {

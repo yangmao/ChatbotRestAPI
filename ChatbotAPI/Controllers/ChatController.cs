@@ -1,8 +1,7 @@
-﻿
-using Chatbot.Domain;
-using Chatbot.Domain.Interface;
+﻿using Chatbot.Domain.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace ChatbotAPI.Controllers
@@ -18,10 +17,25 @@ namespace ChatbotAPI.Controllers
             _logger = logger;
             _consultService = consultService;
         }
+
+        [HttpGet]
+        public ObjectResult Get()
+        {
+            return new OkObjectResult("ok");
+        }
+
+        [HttpPost]
         public async Task<string[]> Chat(string msg)
         {
-          
-            return await _consultService.Consult(msg);
+            try
+            {
+                return await _consultService.Consult(msg);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Debug, new EventId(), null, ex);
+                return new string[] { "Sorry, there is an error. please contact administrator." };
+            }
         }
     }
 }
