@@ -8,9 +8,9 @@ namespace Chatbot.Domain
 {
     public static class NLPHelper
     {
-        public static string[] BagOfWords(string sentence, string[] words)
+        public static int[] BagOfWords(string sentence, string[] words)
         {
-            var bag = new string[words.Length];
+            var bag = new int[words.Length];
 
             var s_words = Tokenize(sentence);
             s_words = Stemmerize(s_words);
@@ -19,10 +19,11 @@ namespace Chatbot.Domain
                 var i = 0;
                 foreach (var wrd in words)
                 {
+                    var tempwrd = wrd.Trim('"');
                     i++;
-                    if (se == wrd)
+                    if (se == tempwrd)
                     {
-                        bag[i] = se;
+                        bag[i] = 1;
                     }
                 }
             }

@@ -1,6 +1,7 @@
 ﻿using Chatbot.Domain.Interface;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,14 +18,16 @@ namespace Chatbot.Domain.concrete
         public async Task<string[]> Consult(string query)
         {
             var words = await _dataTransformerService.GetWords();
+            words = words.Where(x => x != "\"").Distinct().ToArray();
+            words = NLPHelper.Stemmerize(words);
             var reply = NLPHelper.BagOfWords(query, words);
             var content = new StringContent(JsonConvert.SerializeObject(reply), Encoding.UTF8, "application/json");
 
             var httpClient = new HttpClient();
             var modelUrl = "https://chatbot-model.herokuapp.com/v1/models/chatbot_model:predict";
-            await httpClient.PostAsync(modelUrl,content);
+            var returnValue = await httpClient.PostAsync(modelUrl,content);
             
-            return reply;
+            return null;
             
         }
 
