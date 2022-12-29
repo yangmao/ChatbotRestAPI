@@ -9,8 +9,12 @@ namespace Chatbot.Domain.Extensions
     {
         public static void AddDomainServices(this IServiceCollection services)
         {
-            
-            
+            services.AddScoped<IDataTransformerService>(x =>
+               new DataTransformerService(services.BuildServiceProvider().GetService<IIntentRepository>()));
+            services.AddScoped<IConsultService>(x =>
+               new ConsultService(services.BuildServiceProvider().GetService<IDataTransformerService>()));
+
+
         }
     }
 }

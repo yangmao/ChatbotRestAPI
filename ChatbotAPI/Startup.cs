@@ -1,6 +1,4 @@
-using Chatbot.Domain.concrete;
-using Chatbot.Domain.Interface;
-using Chatbot.Domain.Ports;
+using Chatbot.Domain.Extensions;
 using Database.SQLServer.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,11 +19,7 @@ namespace ChatbotAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCustomDapperContext();
-            services.AddScoped<IDataTransformerService>(x =>
-               new DataTransformerService(services.BuildServiceProvider().GetService<IIntentRepository>()));
-            services.AddScoped<IConsultService>(x =>
-               new ConsultService(services.BuildServiceProvider().GetService<IDataTransformerService>()));
-           
+            services.AddDomainServices();
             services.AddControllers();
         }
 
