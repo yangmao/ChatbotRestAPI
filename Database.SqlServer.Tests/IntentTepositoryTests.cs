@@ -1,8 +1,3 @@
-using Database.SQLServer;
-using Database.SQLServer.Repositories;
-using Microsoft.Extensions.Configuration;
-using Moq;
-
 namespace Database.SqlServer.Tests
 {
     public class IntentTepositoryTests

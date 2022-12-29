@@ -4,8 +4,7 @@ using Chatbot.Domain.Ports;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
-namespace Chatbot.Domain.concrete
+namespace Chatbot.Domain.Concrete
 {
     public class DataTransformerService : IDataTransformerService
     {

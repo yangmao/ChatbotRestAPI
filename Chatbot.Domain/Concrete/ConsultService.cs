@@ -6,14 +6,16 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chatbot.Domain.concrete
+namespace Chatbot.Domain.Concrete
 {
     public class ConsultService : IConsultService
     {
         private readonly IDataTransformerService _dataTransformerService;
-        public ConsultService(IDataTransformerService dataTransformerService)
+        private readonly IHttpHandler _httpClient;
+        public ConsultService(IDataTransformerService dataTransformerService, IHttpHandler httpClient)
         {
             _dataTransformerService = dataTransformerService;
+            _httpClient = httpClient;
         }
         public async Task<string[]> Consult(string query)
         {
@@ -23,11 +25,11 @@ namespace Chatbot.Domain.concrete
             var reply = NLPHelper.BagOfWords(query, words);
             var content = new StringContent(JsonConvert.SerializeObject(reply), Encoding.UTF8, "application/json");
 
-            var httpClient = new HttpClient();
+          
             var modelUrl = "https://chatbot-model.herokuapp.com/v1/models/chatbot_model:predict";
-            var returnValue = await httpClient.PostAsync(modelUrl,content);
+            var returnValue = await _httpClient.Client.PostAsync(modelUrl,content);
             
-            return null;
+            return new string[] {""};
             
         }
 
