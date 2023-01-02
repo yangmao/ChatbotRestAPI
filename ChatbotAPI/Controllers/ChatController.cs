@@ -1,4 +1,5 @@
 ﻿using Chatbot.Domain.Interface;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -25,6 +26,7 @@ namespace ChatbotAPI.Controllers
         }
 
         [HttpPost]
+        [EnableCors("AllowOrigin")]
         public async Task<string[]> Chat(string msg)
         {
             try
