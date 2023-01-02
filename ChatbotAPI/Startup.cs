@@ -20,11 +20,12 @@ namespace ChatbotAPI
         {
             services.AddCustomDapperContext();
             services.AddDomainServices();
-            services.AddControllers();
             services.AddCors(c =>
             {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader());
             });
+            services.AddControllers();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +41,7 @@ namespace ChatbotAPI
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors("AllowOrigin");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
