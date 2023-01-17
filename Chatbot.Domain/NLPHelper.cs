@@ -19,9 +19,8 @@ namespace Chatbot.Domain
                 var i = 0;
                 foreach (var wrd in words)
                 {
-                    var tempwrd = wrd.Trim('"');
                     i++;
-                    if (se == tempwrd)
+                    if (se == wrd)
                     {
                         bag[i] = 1;
                     }

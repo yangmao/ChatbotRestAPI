@@ -3,6 +3,7 @@ using Chatbot.Domain.Models;
 using Chatbot.Domain.Ports;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 namespace Chatbot.Domain.Concrete
 {
@@ -39,8 +40,14 @@ namespace Chatbot.Domain.Concrete
             {
                 wrds += " " + intent.Pattern;
             }
+
             var words = NLPHelper.Tokenize(wrds);
+            words = words
+                .Select(x => (x.Contains("\"") ? x.Replace("\"", "").ToLower() : x.ToLower()))
+                .Distinct()
+                .ToArray();
             words = NLPHelper.Stemmerize(words);
+            words = words.Distinct().Where(x=>x !="").ToArray();
             Array.Sort(words);
             return words;
         }

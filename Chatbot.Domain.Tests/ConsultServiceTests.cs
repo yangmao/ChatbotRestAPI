@@ -22,7 +22,7 @@ namespace Chatbot.Domain.Tests
             _HttpClientMock.Setup(h => h.Client).Returns(new HttpClient());
             var consultService = new ConsultService(_dataTransformerServiceMock.Object, _HttpClientMock.Object);
             var returns = consultService.Consult("Test");
-            Assert.Equal(new string[] {""}, returns.Result);
+            Assert.Equal("", returns.Result);
         }
     }
 }

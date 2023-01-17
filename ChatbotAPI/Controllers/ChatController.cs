@@ -27,7 +27,7 @@ namespace ChatbotAPI.Controllers
 
         [HttpPost]
         [EnableCors("AllowOrigin")]
-        public async Task<string[]> Chat(string msg)
+        public async Task<string> Chat(string msg)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace ChatbotAPI.Controllers
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Debug, new EventId(), null, ex);
-                return new string[] { "Sorry, there is an error. please contact administrator." };
+                return "Sorry, there is an error. please contact administrator.";
             }
         }
     }
