@@ -13,12 +13,12 @@ namespace Database.SQLServer.Repositories
 {
     public class IntentRepository : IIntentRepository
     {
-        private readonly DapperContext _context;
-        public IntentRepository(DapperContext context)
+        private readonly IDapperContext _context ;
+        public IntentRepository(IDapperContext context)
         { 
             _context= context;
         }
-        public async Task<IEnumerable<Intent>> GetIntents()
+        public async Task<List<Intent>> GetIntents()
         {
             var query = "SELECT * FROM Intent";
             using (var connection = _context.CreateConnection())

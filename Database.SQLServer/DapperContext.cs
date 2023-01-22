@@ -3,13 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Chatbot.Domain.Ports;
 
 namespace Database.SQLServer
 {
-    public class DapperContext
+    public class DapperContext : IDapperContext
     {
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;

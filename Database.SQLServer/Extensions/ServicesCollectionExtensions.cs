@@ -8,8 +8,8 @@ namespace Database.SQLServer.Extensions
     {
         public static void AddCustomDapperContext(this IServiceCollection services)
         { 
-            services.AddSingleton<DapperContext>();
-            services.AddScoped<IIntentRepository, IntentRepository>();
+            services.AddSingleton<IDapperContext,DapperContext>();
+            services.AddScoped<IIntentRepository>(x=> new IntentRepository(services.BuildServiceProvider().GetService<IDapperContext>()));
         }
     }
 }

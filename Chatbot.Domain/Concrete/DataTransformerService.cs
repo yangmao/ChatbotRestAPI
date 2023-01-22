@@ -1,6 +1,7 @@
 ﻿using Chatbot.Domain.Interface;
 using Chatbot.Domain.Models;
 using Chatbot.Domain.Ports;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Chatbot.Domain.Concrete
         {
             _intentRepository = intentRepository;
         }
-        public async Task<IEnumerable<Intent>> GetIntents()
+        public async Task<List<Intent>> GetIntents()
         {
             return await _intentRepository.GetIntents();
         }
@@ -47,9 +48,33 @@ namespace Chatbot.Domain.Concrete
                 .Distinct()
                 .ToArray();
             words = NLPHelper.Stemmerize(words);
-            words = words.Distinct().Where(x=>x !="").ToArray();
+            words = words.Distinct().Where(x => x != "").ToArray();
             Array.Sort(words);
             return words;
+        }
+
+        public async Task<string> GetTraining()
+        {
+            var intents = await GetIntents();
+            var words = await GetWords();
+            var labels = await GetLables();
+
+            var training = new int[intents.Count()][];
+            var output = new int[intents.Count()][];
+
+            for (int i = 0; i < intents.Count(); i++)
+            {
+                var output_row = new int[intents.Count()];
+                for (int j = 0; j < intents.Count(); j++)
+                {
+                    output_row[j] = 0;
+                }
+                output[i] = output_row;
+                training[i] = NLPHelper.BagOfWords(intents[i].Pattern, words);
+                output[i][labels.ToList().IndexOf(intents[i].Tag)] = 1;
+            }
+
+            return JsonConvert.SerializeObject(new { training = training, output = output });
         }
     }
 }

@@ -8,6 +8,6 @@ namespace Chatbot.Domain.Ports
 {
     public interface IIntentRepository
     {
-        Task<IEnumerable<Intent>> GetIntents();
+        Task<List<Intent>> GetIntents();
     }
 }

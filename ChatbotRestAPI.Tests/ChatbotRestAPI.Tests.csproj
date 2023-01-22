@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Chatbot.Domain\Chatbot.Domain.csproj" />
-    <ProjectReference Include="..\ChatbotAPI\ChatbotAPI.csproj" />
+    <ProjectReference Include="..\ChatbotRestAPI\ChatbotRestAPI.csproj" />
   </ItemGroup>
 
 </Project>

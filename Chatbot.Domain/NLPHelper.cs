@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Annytab.Stemmer;
 
 
@@ -19,18 +17,18 @@ namespace Chatbot.Domain
                 var i = 0;
                 foreach (var wrd in words)
                 {
-                    i++;
                     if (se == wrd)
                     {
                         bag[i] = 1;
                     }
+                    i++;
                 }
             }
             return bag;
         }
         public static string[] Tokenize(string sentence)
         {
-            char[] delims = new char[] { ' ', ',', '.', ':', '!', '?' };
+            char[] delims = new char[] { ' ', ',', '.', ':', '!', '?','/','"' };
             return sentence.Split(delims, StringSplitOptions.RemoveEmptyEntries);
         }
 
