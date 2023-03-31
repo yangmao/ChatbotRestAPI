@@ -16,5 +16,4 @@
     <ProjectReference Include="..\Database.SQLServer\Database.SQLServer.csproj" />
     <ProjectReference Include="..\TrainingDataProviderAPI\TrainingDataProviderAPI.csproj" />
   </ItemGroup>
-
 </Project>

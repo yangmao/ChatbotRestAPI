@@ -4,7 +4,7 @@ using Database.SQLServer.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddHealthChecks();
 // Add services to the container.
 builder.Services.AddCors(c =>
 {
@@ -18,7 +18,8 @@ builder.Services.AddCustomDapperContext();
 builder.Services.AddDomainServices();
 
 var app = builder.Build();
-
+app.MapHealthChecks("/health");
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

@@ -28,7 +28,7 @@ namespace Chatbot.Domain
         }
         public static string[] Tokenize(string sentence)
         {
-            char[] delims = new char[] { ' ', ',', '.', ':', '!', '?','/','"' };
+            char[] delims = new char[] { ' ', ',', '.', ':', '!', '?','/','"','[',']' };
             return sentence.Split(delims, StringSplitOptions.RemoveEmptyEntries);
         }
 

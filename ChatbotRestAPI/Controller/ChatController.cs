@@ -17,12 +17,6 @@ namespace ChatbotAPI.Controllers
             _consultService = consultService;
         }
 
-        [HttpGet]
-        public ObjectResult Get()
-        {
-            return new OkObjectResult("ok");
-        }
-
         [HttpPost]
         [EnableCors("AllowOrigin")]
         public async Task<string> Chat(string msg)
