@@ -5,6 +5,8 @@ using Database.SQLServer.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHealthChecks();
+builder.Services.AddSwaggerGen();
+
 // Add services to the container.
 builder.Services.AddCors(c =>
 {
@@ -20,6 +22,13 @@ builder.Services.AddDomainServices();
 var app = builder.Build();
 app.MapHealthChecks("/health");
 app.UseCors();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
