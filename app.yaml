@@ -1,0 +1,4 @@
+﻿runtime: custom
+env: flex
+resources:
+  memory_gb: 4
