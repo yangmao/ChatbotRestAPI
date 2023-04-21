@@ -1,7 +1,4 @@
-using Chatbot.Domain.Extensions;
-using Database.SQLServer.Extensions;
-using Database.MongoDb.Adapter.Extentions;
-
+using Chatbot.WearingUp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHealthChecks();
@@ -15,10 +12,8 @@ builder.Services.AddCors(c =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-builder.Services.AddCustomDapperContext();
-builder.Services.AddDomainServices();
-builder.Services.AddMongoDB(builder.Configuration);
+
+builder.Services.RegisterChatbot(builder.Configuration);
 
 
 var app = builder.Build();

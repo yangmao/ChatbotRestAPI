@@ -6,8 +6,9 @@ namespace Database.SQLServer.Extensions
 {
     public static class ServicesCollectionExtensions
     {
-        public static void AddCustomDapperContext(this IServiceCollection services)
-        { 
+        public static void RegisterSqlServerDB(this IServiceCollection services)
+        {
+           
             services.AddSingleton<IDapperContext,DapperContext>();
             services.AddScoped<IIntentRepository>(x=> new IntentRepository(services.BuildServiceProvider().GetService<IDapperContext>()));
         }

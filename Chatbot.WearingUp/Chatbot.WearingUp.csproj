@@ -1,9 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chatbot.Domain\Chatbot.Domain.csproj" />
+    <ProjectReference Include="..\Database.MongoDb.Adapter\Database.MongoDb.Adapter.csproj" />
+    <ProjectReference Include="..\Database.SQLServer\Database.SQLServer.csproj" />
+    <ProjectReference Include="..\TrainingDataProviderAPI\TrainingDataProviderAPI.csproj" />
+  </ItemGroup>
 
 </Project>
