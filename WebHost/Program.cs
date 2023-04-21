@@ -1,6 +1,6 @@
-using Chatbot.Domain.Concrete;
 using Chatbot.Domain.Extensions;
 using Database.SQLServer.Extensions;
+using Database.MongoDb.Adapter.Extentions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +18,8 @@ builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 builder.Services.AddCustomDapperContext();
 builder.Services.AddDomainServices();
+builder.Services.AddMongoDB(builder.Configuration);
+
 
 var app = builder.Build();
 app.MapHealthChecks("/health");

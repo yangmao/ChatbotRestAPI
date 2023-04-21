@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChatbotRestAPI\ChatbotRestAPI.csproj" />
+    <ProjectReference Include="..\Database.MongoDb.Adapter\Database.MongoDb.Adapter.csproj" />
     <ProjectReference Include="..\Database.SQLServer\Database.SQLServer.csproj" />
     <ProjectReference Include="..\TrainingDataProviderAPI\TrainingDataProviderAPI.csproj" />
   </ItemGroup>
