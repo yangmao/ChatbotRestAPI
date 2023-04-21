@@ -1,1 +1,1 @@
-gcloud run deploy chatbot-rest-api --image gcr.io/chatbotrest-382018/chatbotrestapi  --platform managed --port 8080 --region australia-southeast1
+gcloud run deploy chatbot-rest-api --image gcr.io/chatbotrest-382018/chatbotrestapi-free  --platform managed --port 8080 --region australia-southeast1

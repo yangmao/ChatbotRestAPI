@@ -1,4 +1,5 @@
 ﻿using Chatbot.Domain.Interface;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,18 +15,19 @@ namespace Chatbot.Domain.Concrete
     {
         private readonly IDataTransformerService _dataTransformerService;
         private readonly IHttpHandler _httpClient;
-        public ConsultService(IDataTransformerService dataTransformerService, IHttpHandler httpClient)
+        private readonly IConfiguration _configuration;
+        public ConsultService(IDataTransformerService dataTransformerService, IHttpHandler httpClient, IConfiguration configuration)
         {
             _dataTransformerService = dataTransformerService;
             _httpClient = httpClient;
+            _configuration = configuration;
         }
         public async Task<string> Consult(string query)
         {
             var words = await _dataTransformerService.GetWords();
             var inputdata = NLPHelper.BagOfWords(query, words);
-
             var content = new StringContent(JsonConvert.SerializeObject(new { instances = new int[][] { inputdata } }), Encoding.UTF8, "application/json");
-            var modelUrl = "https://chatbot-model-server-cr2e4b3nfa-ts.a.run.app/v1/models/chatbot_model:predict";
+            var modelUrl = _configuration.GetSection("ModelServer").Value+"/v1/models/chatbot_model:predict";
             var returnValue = await _httpClient.Client.PostAsync(modelUrl, content).Result.Content.ReadAsStringAsync();
 
             return await ProcessResponse(returnValue);
