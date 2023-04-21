@@ -28,7 +28,19 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: PublishPipelineArtifact@1
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    targetPath: $(System.DefaultWorkingDirectory)
+    artifactName: WebHost
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'azure-portal-app-service'
+    appType: 'webAppLinux'
+    WebAppName: 'chatbotrestapi'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'chatbot-rest-api'
+    SlotName: 'production'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    RuntimeStack: 'DOTNETCORE|6.0'
+
