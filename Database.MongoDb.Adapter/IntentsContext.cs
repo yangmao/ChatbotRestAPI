@@ -1,5 +1,6 @@
 ﻿using Chatbot.Domain.Models;
 using Database.MongoDb.Adapter.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Database.MongoDb.Adapter
@@ -14,29 +15,19 @@ namespace Database.MongoDb.Adapter
             _intentsDto =  database.GetCollection<IntentsDto>(mongoDdatabaseSettings.CollectionName);
         }
 
-        public string CreateIntent(Intent intents)
+        
+
+        public async Task CreateTenant(IntentsDto intents)
         {
-            throw new NotImplementedException();
+            await _intentsDto.InsertOneAsync(intents);
         }
 
-        public void CreateTenant(IntentsDto intents)
+        public async Task<IntentsDto> GetAsync()
         {
-            _intentsDto.InsertOne(intents);
+            var cusor = await _intentsDto.FindAsync(x=>x.TenantId == 1);
+            return  await cusor.FirstAsync();
         }
 
-        public bool DeleteTenent(int tenantId)
-        {
-            return _intentsDto.DeleteOne(x => x.TenantId == tenantId).IsAcknowledged;
-        }
-
-        public IntentsDto Get(int tenantId)
-        {
-            return _intentsDto.Find(x => x.TenantId == tenantId).FirstOrDefault();
-        }
-
-        public bool Update(int id, IntentsDto intentsDto)
-        {
-            return _intentsDto.ReplaceOne(x => x.TenantId == id, intentsDto).IsAcknowledged;
-        }
+       
     }
 }

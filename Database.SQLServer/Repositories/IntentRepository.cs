@@ -2,6 +2,7 @@
 using Chatbot.Domain.Ports;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,15 @@ namespace Database.SQLServer.Repositories
             var query = "SELECT * FROM Intent";
             using (var connection = _context.CreateConnection())
             {
-                var intents = await connection.QueryAsync<Intent>(query);
-                return intents.ToList();
+                var intents = await connection.QueryAsync<object>(query);
+                var result = new List<Intent>();
+                
+                foreach(var intent in intents) 
+                {
+                    var temp = intent.ToString();
+                    result.Add(JsonConvert.DeserializeObject<Intent>(intent.ToString()));
+                }
+                return result;
             }
         }
     }

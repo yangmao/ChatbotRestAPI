@@ -1,4 +1,5 @@
-﻿using Database.MongoDb.Adapter.Models;
+﻿using Chatbot.Domain.Ports;
+using Database.MongoDb.Adapter.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -14,6 +15,7 @@ namespace Database.MongoDb.Adapter.Extentions
             services.AddSingleton<IChatbotMongoDdatabaseSettings>(sp => sp.GetRequiredService<IOptions<ChatbotMongoDatabaseSettings>>().Value);
             services.AddSingleton<IMongoClient>(s => new MongoClient(configuration.GetValue<string>("ChatbotMongoDatabaseSettings:ConnectionString")));
             services.AddScoped<IIntentContext, IntentsContext>();
+            services.AddScoped<IIntentRepository>(x => new IntentRepository(services.BuildServiceProvider().GetService<IIntentContext>()));
         }
     }
 }

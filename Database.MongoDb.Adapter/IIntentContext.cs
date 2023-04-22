@@ -1,5 +1,6 @@
 ﻿using Chatbot.Domain.Models;
 using Database.MongoDb.Adapter.Models;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,8 @@ namespace Database.MongoDb.Adapter
 {
     public interface IIntentContext
     {
-        public void CreateTenant(IntentsDto intents);
-        public string CreateIntent(Intent intents);
-        public bool Update(int id, IntentsDto intentsDto);
-        public bool DeleteTenent(int tenantId);
-        public IntentsDto Get(int tenantId);
+        public Task CreateTenant(IntentsDto intents);
+        
+        public Task<IntentsDto> GetAsync();
     }
 }

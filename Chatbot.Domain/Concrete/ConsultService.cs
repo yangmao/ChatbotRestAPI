@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Chatbot.Domain.Concrete
@@ -51,12 +50,12 @@ namespace Chatbot.Domain.Concrete
             {
                 if (intent.Tag == theLabel)
                 {
-                    char[] delims = new char[] { '\"' };
-                    var responseList = intent.Response.Split(delims, StringSplitOptions.RemoveEmptyEntries);
-                    responseList = responseList.Where(x => x != "," && x !=", " ).ToArray();
+                    //char[] delims = new char[] { '\"' };
+                    //var responseList = intent.Response.Split(delims, StringSplitOptions.RemoveEmptyEntries);
+                    //responseList = responseList.Where(x => x != "," && x !=", " ).ToArray();
                     Random rnd = new Random();
-                    var randomChoice = rnd.Next(0, responseList.Length - 1);
-                    response = responseList[randomChoice];
+                    var randomChoice = rnd.Next(0, intent.Response.Count - 1);
+                    response = intent.Response[randomChoice];
                 }
             }
             return response;
