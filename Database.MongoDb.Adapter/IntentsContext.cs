@@ -7,24 +7,22 @@ namespace Database.MongoDb.Adapter
 {
     public class IntentsContext: IIntentContext
     {
-        private readonly IMongoCollection<IntentsDto> _intentsDto;
+        private readonly IMongoCollection<IntentsCollections> _intentsCollection;
 
         public IntentsContext(IChatbotMongoDdatabaseSettings mongoDdatabaseSettings,IMongoClient mongoClient) 
         {
             var database = mongoClient.GetDatabase(mongoDdatabaseSettings.DatabaseName);
-            _intentsDto =  database.GetCollection<IntentsDto>(mongoDdatabaseSettings.CollectionName);
+            _intentsCollection =  database.GetCollection<IntentsCollections>(mongoDdatabaseSettings.CollectionName);
         }
 
-        
-
-        public async Task CreateTenant(IntentsDto intents)
+        public async Task CreateTenant(IntentsCollections intents)
         {
-            await _intentsDto.InsertOneAsync(intents);
+            await _intentsCollection.InsertOneAsync(intents);
         }
 
-        public async Task<IntentsDto> GetAsync()
+        public async Task<IntentsCollections> GetAsync()
         {
-            var cusor = await _intentsDto.FindAsync(x=>x.TenantId == 1);
+            var cusor = await _intentsCollection.FindAsync(x=>x.Intents != null);
             return  await cusor.FirstAsync();
         }
 

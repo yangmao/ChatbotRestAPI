@@ -11,8 +11,8 @@ namespace Database.MongoDb.Adapter
 {
     public interface IIntentContext
     {
-        public Task CreateTenant(IntentsDto intents);
+        public Task CreateTenant(IntentsCollections intents);
         
-        public Task<IntentsDto> GetAsync();
+        public Task<IntentsCollections> GetAsync();
     }
 }

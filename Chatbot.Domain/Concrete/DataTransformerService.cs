@@ -15,7 +15,7 @@ namespace Chatbot.Domain.Concrete
         {
             _intentRepository = intentRepository;
         }
-        public async Task<List<Intent>> GetIntents()
+        public async Task<IEnumerable<Intent>> GetIntents()
         {
             return await _intentRepository.GetIntents();
         }
@@ -40,8 +40,7 @@ namespace Chatbot.Domain.Concrete
             string wrds = string.Empty;
             foreach (var intent in intents)
             {
-                foreach(var pattern in intent.Pattern)
-                    wrds += " " + pattern;
+                    wrds += " " + intent.Pattern;
             }
 
             var words = NLPHelper.Tokenize(wrds);
@@ -67,8 +66,8 @@ namespace Chatbot.Domain.Concrete
 
             foreach (var intent in intents)
             {
-                //var patterns = JsonConvert.DeserializeObject<List<string>>(intent.Pattern);
-                foreach (var pattern in intent.Pattern)
+                var patterns = JsonConvert.DeserializeObject<List<string>>(intent.Pattern);
+                foreach (var pattern in patterns)
                 {
                     var output_row = new int[labels.Count()];
                     output_row[labels.ToList().IndexOf(intent.Tag)] = 1;

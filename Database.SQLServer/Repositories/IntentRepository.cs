@@ -19,21 +19,29 @@ namespace Database.SQLServer.Repositories
         { 
             _context= context;
         }
-        public async Task<List<Intent>> GetIntents()
+
+        public Task AddIntent(Intent intent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Intent>> GetIntents()
         {
             var query = "SELECT * FROM Intent";
             using (var connection = _context.CreateConnection())
             {
-                var intents = await connection.QueryAsync<object>(query);
-                var result = new List<Intent>();
-                
-                foreach(var intent in intents) 
-                {
-                    var temp = intent.ToString();
-                    result.Add(JsonConvert.DeserializeObject<Intent>(intent.ToString()));
-                }
-                return result;
+                return  await connection.QueryAsync<Intent>(query);
             }
+        }
+
+        public Task RemoveIntent(string tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateIntent(Intent intent)
+        {
+            throw new NotImplementedException();
         }
     }
 }

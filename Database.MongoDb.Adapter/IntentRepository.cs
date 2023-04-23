@@ -1,7 +1,9 @@
 ﻿using Chatbot.Domain.Models;
 using Chatbot.Domain.Ports;
+using Database.MongoDb.Adapter.Models;
 using MongoDB.Bson.IO;
 using Newtonsoft.Json;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Database.MongoDb.Adapter
 {
@@ -13,11 +15,33 @@ namespace Database.MongoDb.Adapter
         { 
             _intentContext = intentContext;
         }
-        public async Task<List<Intent>> GetIntents()
+
+        public Task AddIntent(Intent intent)
         {
-            var intentDto =  await _intentContext.GetAsync();
-            var intents = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Intent>>(intentDto.Intents);
-            return intents;
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Intent>> GetIntents()
+        {
+            var intentCollection =  await _intentContext.GetAsync();
+            var intentDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<List<IntentDto>>(intentCollection.Intents);
+            var intents = new List<Intent>();
+            return intentDtos.Select(x => new Intent
+            {
+                Tag = x.Tag,
+                Pattern = Newtonsoft.Json.JsonConvert.SerializeObject(x.Pattern),
+                Response = Newtonsoft.Json.JsonConvert.SerializeObject(x.Response)
+            });
+        }
+
+        public Task RemoveIntent(string tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateIntent(Intent intent)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,13 +1,17 @@
 ﻿using Chatbot.Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Chatbot.Domain.Ports
 {
     public interface IIntentRepository
     {
-        Task<List<Intent>> GetIntents();
+        Task<IEnumerable<Intent>> GetIntents();
+
+        Task AddIntent(Intent intent);
+
+        Task RemoveIntent(string tag);
+
+        Task UpdateIntent(Intent intent);
     }
 }

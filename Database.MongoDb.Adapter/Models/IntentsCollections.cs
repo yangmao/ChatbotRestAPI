@@ -9,14 +9,8 @@ using System.Threading.Tasks;
 namespace Database.MongoDb.Adapter.Models
 {
     [BsonIgnoreExtraElements]
-    public class IntentsDto
+    public class IntentsCollections
     {
-        [BsonElement("tenantId")]
-        public int TenantId { get; set; }
-
-        [BsonElement("tenantName")]
-        public string TenantName { get; set; } = string.Empty;
-
         [BsonElement("intents")]
         public string Intents { get; set; }
     }
