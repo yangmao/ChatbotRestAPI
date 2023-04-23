@@ -25,6 +25,11 @@ namespace Database.SQLServer.Repositories
             throw new NotImplementedException();
         }
 
+        public Task CreateAsync(string json)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<Intent>> GetIntents()
         {
             var query = "SELECT * FROM Intent";

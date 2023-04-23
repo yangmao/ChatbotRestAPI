@@ -1,5 +1,6 @@
 ﻿using Chatbot.Domain.Models;
 using Database.MongoDb.Adapter.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,7 @@ namespace Database.MongoDb.Adapter
 {
     public interface IIntentContext
     {
-        public Task CreateTenant(IntentsCollections intents);
-        
+        public Task CreateAsync(IntentsCollections intents);
         public Task<IntentsCollections> GetAsync();
     }
 }

@@ -1,9 +1,10 @@
 ﻿using Chatbot.Domain.Models;
 using Chatbot.Domain.Ports;
 using Database.MongoDb.Adapter.Models;
-using MongoDB.Bson.IO;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using Newtonsoft.Json;
-using System.Security.Cryptography.X509Certificates;
+
 
 namespace Database.MongoDb.Adapter
 {
@@ -16,21 +17,29 @@ namespace Database.MongoDb.Adapter
             _intentContext = intentContext;
         }
 
-        public Task AddIntent(Intent intent)
+        public async Task CreateAsync(string json)
+        {
+            var intents = JsonConvert.DeserializeObject<Dictionary<string,List<IntentDto>>>(json);
+            var intentsCollection = new IntentsCollections()
+            {
+                Intents = JsonConvert.SerializeObject(intents.Values.FirstOrDefault())
+            };
+            await _intentContext.CreateAsync(intentsCollection);
+        }
+        public async Task AddIntent(Intent intent)
         {
             throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Intent>> GetIntents()
         {
-            var intentCollection =  await _intentContext.GetAsync();
-            var intentDtos = Newtonsoft.Json.JsonConvert.DeserializeObject<List<IntentDto>>(intentCollection.Intents);
-            var intents = new List<Intent>();
+            var intentCollection = await _intentContext.GetAsync();
+            var intentDtos = JsonConvert.DeserializeObject<List<IntentDto>>(intentCollection.Intents);
             return intentDtos.Select(x => new Intent
             {
                 Tag = x.Tag,
-                Pattern = Newtonsoft.Json.JsonConvert.SerializeObject(x.Pattern),
-                Response = Newtonsoft.Json.JsonConvert.SerializeObject(x.Response)
+                Pattern = JsonConvert.SerializeObject(x.Pattern),
+                Response = JsonConvert.SerializeObject(x.Response)
             });
         }
 

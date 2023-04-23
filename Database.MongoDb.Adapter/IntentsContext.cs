@@ -2,6 +2,7 @@
 using Database.MongoDb.Adapter.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Database.MongoDb.Adapter
 {
@@ -15,7 +16,7 @@ namespace Database.MongoDb.Adapter
             _intentsCollection =  database.GetCollection<IntentsCollections>(mongoDdatabaseSettings.CollectionName);
         }
 
-        public async Task CreateTenant(IntentsCollections intents)
+        public async Task CreateAsync(IntentsCollections intents)
         {
             await _intentsCollection.InsertOneAsync(intents);
         }
@@ -26,6 +27,5 @@ namespace Database.MongoDb.Adapter
             return  await cusor.FirstAsync();
         }
 
-       
     }
 }
