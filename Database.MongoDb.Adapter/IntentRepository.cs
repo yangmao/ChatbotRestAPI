@@ -1,8 +1,6 @@
 ﻿using Chatbot.Domain.Models;
 using Chatbot.Domain.Ports;
 using Database.MongoDb.Adapter.Models;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using Newtonsoft.Json;
 
 

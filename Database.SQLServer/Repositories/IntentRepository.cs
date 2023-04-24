@@ -25,9 +25,26 @@ namespace Database.SQLServer.Repositories
             throw new NotImplementedException();
         }
 
-        public Task CreateAsync(string json)
+        public async Task CreateAsync(string json)
         {
-            throw new NotImplementedException();
+            var intents = JsonConvert.DeserializeObject<Dictionary<string, List<IntentDto>>>(json);
+            var query = $"INSERT INTO Intent (Tag, Pattern, Response) VALUES ";
+
+
+            foreach (var intent in intents.Values.FirstOrDefault())
+            {
+                 var pattern = JsonConvert.SerializeObject(intent.Pattern).Replace("'","''");
+                 var response = JsonConvert.SerializeObject(intent.Response).Replace("'", "''");
+                 var tag = intent.Tag ;
+                var value = $" ('{tag}','{pattern}','{response}'),";
+                query += value;
+            }
+
+            query = query.Substring(0,query.Length - 1) ;
+            using (var connection = _context.CreateConnection())
+            {
+               await connection.QueryAsync<Intent>(query);
+            }
         }
 
         public async Task<IEnumerable<Intent>> GetIntents()

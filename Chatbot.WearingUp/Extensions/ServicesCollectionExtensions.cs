@@ -12,8 +12,8 @@ namespace Chatbot.WearingUp.Extensions
         public static void RegisterChatbot(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDomainServices();
-            services.RegisterMongoDB(configuration);
-            //services.RegisterSqlServerDB();
+            //services.RegisterMongoDB(configuration);
+            services.RegisterSqlServerDB();
         }
     }
 }
