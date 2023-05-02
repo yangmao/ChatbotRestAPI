@@ -50,7 +50,7 @@ namespace Chatbot.Domain.Concrete
             {
                 if (intent.Tag == theLabel)
                 {
-                    char[] delims = new char[] { '\"' };
+                    char[] delims = new char[] { '\"','[',']' };
                     var responseList = intent.Response.Split(delims, StringSplitOptions.RemoveEmptyEntries);
                     responseList = responseList.Where(x => x != "," && x != ", ").ToArray();
                     Random rnd = new Random();
