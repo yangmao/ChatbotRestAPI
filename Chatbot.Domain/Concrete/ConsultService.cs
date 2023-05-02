@@ -38,7 +38,7 @@ namespace Chatbot.Domain.Concrete
             var pridictionList = resultObj["predictions"][0];
             var maxValue = pridictionList.Max(x => x);
             int? index = null;
-            if (maxValue > 0.80)
+            if (maxValue > 0.65)
             {
                 index = pridictionList.IndexOf(maxValue);
             }
