@@ -6,12 +6,12 @@ namespace Chatbot.Domain.Tests
 {
     public class ConsultServiceTests
     {
-        private readonly Mock<IDataTransformerService> _dataTransformerServiceMock;
+        private readonly Mock<IWordEmbeddingService> _dataTransformerServiceMock;
         private readonly Mock<IHttpHandler> _HttpClientMock;
 
         public ConsultServiceTests()
         {
-            _dataTransformerServiceMock = new Mock<IDataTransformerService>();
+            _dataTransformerServiceMock = new Mock<IWordEmbeddingService>();
             _HttpClientMock = new Mock<IHttpHandler>();
         }
         

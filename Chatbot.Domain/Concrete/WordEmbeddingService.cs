@@ -8,10 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 namespace Chatbot.Domain.Concrete
 {
-    public class DataTransformerService : IDataTransformerService
+    public class WordEmbeddingService : IWordEmbeddingService
     {
         private IIntentRepository _intentRepository;
-        public DataTransformerService(IIntentRepository intentRepository)
+        public WordEmbeddingService(IIntentRepository intentRepository)
         {
             _intentRepository = intentRepository;
         }

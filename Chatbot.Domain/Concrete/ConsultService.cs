@@ -12,18 +12,18 @@ namespace Chatbot.Domain.Concrete
 {
     public class ConsultService : IConsultService
     {
-        private readonly IDataTransformerService _dataTransformerService;
+        private readonly IWordEmbeddingService _wordEmbeddingService;
         private readonly IHttpHandler _httpClient;
         private readonly IConfiguration _configuration;
-        public ConsultService(IDataTransformerService dataTransformerService, IHttpHandler httpClient, IConfiguration configuration)
+        public ConsultService(IWordEmbeddingService dataTransformerService, IHttpHandler httpClient, IConfiguration configuration)
         {
-            _dataTransformerService = dataTransformerService;
+            _wordEmbeddingService = dataTransformerService;
             _httpClient = httpClient;
             _configuration = configuration;
         }
         public async Task<string> Consult(string query)
         {
-            var words = await _dataTransformerService.GetWords();
+            var words = await _wordEmbeddingService.GetWords();
             var inputdata = NLPHelper.BagOfWords(query, words);
             var content = new StringContent(JsonConvert.SerializeObject(new { instances = new int[][] { inputdata } }), Encoding.UTF8, "application/json");
             var modelUrl = _configuration.GetSection("ModelServer").Value+"/v1/models/chatbot_model:predict";
@@ -42,9 +42,9 @@ namespace Chatbot.Domain.Concrete
             {
                 index = pridictionList.IndexOf(maxValue);
             }
-            var labels = await _dataTransformerService.GetLables();
+            var labels = await _wordEmbeddingService.GetLables();
             var theLabel = index != null ? (labels.ToList())[index.Value] : "unknown";
-            var intents = await _dataTransformerService.GetIntents();
+            var intents = await _wordEmbeddingService.GetIntents();
             var response = "";
             foreach (var intent in intents)
             {
