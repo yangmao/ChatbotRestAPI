@@ -23,7 +23,7 @@ namespace Chatbot.Domain.Concrete
         }
         public async Task<string> Consult(string query)
         {
-            var words = await _wordEmbeddingService.GetWords();
+            var words = await _wordEmbeddingService.GetVacabulary();
             var inputdata = NLPHelper.BagOfWords(query, words);
             var content = new StringContent(JsonConvert.SerializeObject(new { instances = new int[][] { inputdata } }), Encoding.UTF8, "application/json");
             var modelUrl = _configuration.GetSection("ModelServer").Value+"/v1/models/chatbot_model:predict";

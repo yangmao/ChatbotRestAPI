@@ -35,12 +35,12 @@ namespace TrainingDataProviderAPI
             }
         }
 
-        [Route("/BagOfWords")]
-        public async Task<int[]> GetBagOfWords(string pattern)
+        [Route("/SentenceInBOW")]
+        public async Task<int[]> GetSentenceInBOW(string pattern)
         {
             try
             {
-                var words = await _wordEmbeddingService.GetWords();
+                var words = await _wordEmbeddingService.GetVacabulary();
                 return NLPHelper.BagOfWords(pattern, words);
             }
             catch (Exception ex)
