@@ -8,10 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 namespace Chatbot.Domain.Concrete
 {
-    public class DataTransformerService : IDataTransformerService
+    public class WordEmbeddingService : IWordEmbeddingService
     {
         private IIntentRepository _intentRepository;
-        public DataTransformerService(IIntentRepository intentRepository)
+        public WordEmbeddingService(IIntentRepository intentRepository)
         {
             _intentRepository = intentRepository;
         }
@@ -34,7 +34,7 @@ namespace Chatbot.Domain.Concrete
             return lbls;
         }
 
-        public async Task<string[]> GetWords()
+        public async Task<string[]> GetVacabulary()
         {
             var intents = await GetIntents();
             string wrds = string.Empty;
@@ -58,7 +58,7 @@ namespace Chatbot.Domain.Concrete
         {
             
             var intents = await GetIntents();
-            var words = await GetWords();
+            var vacabulary = await GetVacabulary();
             var labels = await GetLables();
 
             var training = new List<int[]>();
@@ -71,7 +71,7 @@ namespace Chatbot.Domain.Concrete
                 {
                     var output_row = new int[labels.Count()];
                     output_row[labels.ToList().IndexOf(intent.Tag)] = 1;
-                    training.Add(NLPHelper.BagOfWords(pattern, words));
+                    training.Add(NLPHelper.BagOfWords(pattern, vacabulary));
                     output.Add(output_row);
                 } 
             }

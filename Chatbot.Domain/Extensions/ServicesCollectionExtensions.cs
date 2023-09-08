@@ -12,11 +12,11 @@ namespace Chatbot.Domain.Extensions
         public static void AddDomainServices(this IServiceCollection services)
         {
             
-            services.AddScoped<IDataTransformerService>(x =>
-               new DataTransformerService(services.BuildServiceProvider().GetService<IIntentRepository>()));
+            services.AddScoped<IWordEmbeddingService>(x =>
+               new WordEmbeddingService(services.BuildServiceProvider().GetService<IIntentRepository>()));
             services.AddSingleton<IHttpHandler, HttpHandler>();
             services.AddScoped<IConsultService>(x =>
-               new ConsultService(services.BuildServiceProvider().GetService<IDataTransformerService>(), services.BuildServiceProvider().GetService<IHttpHandler>(), services.BuildServiceProvider().GetService<IConfiguration>()));
+               new ConsultService(services.BuildServiceProvider().GetService<IWordEmbeddingService>(), services.BuildServiceProvider().GetService<IHttpHandler>(), services.BuildServiceProvider().GetService<IConfiguration>()));
 
 
 

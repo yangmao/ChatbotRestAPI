@@ -13,12 +13,12 @@ namespace TrainingDataProviderAPI
     public class TrainingDataController : ControllerBase
     {
         private readonly ILogger<TrainingDataController> _logger;
-        private readonly IDataTransformerService _dataTransformerService;
+        private readonly IWordEmbeddingService _wordEmbeddingService;
 
-        public TrainingDataController(IDataTransformerService dataTransformerService, ILogger<TrainingDataController> logger)
+        public TrainingDataController(IWordEmbeddingService wordEmbeddingService, ILogger<TrainingDataController> logger)
         {
             _logger = logger;
-            _dataTransformerService = dataTransformerService;
+            _wordEmbeddingService = wordEmbeddingService;
         }
 
         [Route("/TrainingData")]
@@ -26,7 +26,7 @@ namespace TrainingDataProviderAPI
         {
             try
             {
-                return await _dataTransformerService.GetTraining();
+                return await _wordEmbeddingService.GetTraining();
             }
             catch (Exception ex)
             {
@@ -35,12 +35,12 @@ namespace TrainingDataProviderAPI
             }
         }
 
-        [Route("/BagOfWords")]
-        public async Task<int[]> GetBagOfWords(string pattern)
+        [Route("/SentenceInBOW")]
+        public async Task<int[]> GetSentenceInBOW(string pattern)
         {
             try
             {
-                var words = await _dataTransformerService.GetWords();
+                var words = await _wordEmbeddingService.GetVacabulary();
                 return NLPHelper.BagOfWords(pattern, words);
             }
             catch (Exception ex)
