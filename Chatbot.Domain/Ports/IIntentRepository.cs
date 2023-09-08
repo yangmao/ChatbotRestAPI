@@ -6,10 +6,10 @@ namespace Chatbot.Domain.Ports
 {
     public interface IIntentRepository
     {
-        Task CreateAsync(string json);
+        Task UpsertAsync(string json);
         Task<IEnumerable<Intent>> GetIntents();
 
-        Task AddIntent(Intent intent);
+        Task AddIntent(string json);
 
         Task RemoveIntent(string tag);
 

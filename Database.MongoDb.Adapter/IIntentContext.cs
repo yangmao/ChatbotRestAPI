@@ -12,7 +12,8 @@ namespace Database.MongoDb.Adapter
 {
     public interface IIntentContext
     {
-        public Task CreateAsync(IntentsCollections intents);
+        public Task CreateAsync(BsonDocument document);
+        public Task UpsertAsync(IntentsCollections intents);
         public Task<IntentsCollections> GetAsync();
     }
 }
