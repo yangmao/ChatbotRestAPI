@@ -33,7 +33,7 @@ namespace Database.MongoDb.Adapter
                             replacement: intents);
         }
 
-        public async Task InsertManyAsync(List<IntentCollection> intents)
+        public async Task InsertManyAsync(IEnumerable<IntentCollection> intents)
         {
             await _intentCollection.InsertManyAsync(intents);
         }
