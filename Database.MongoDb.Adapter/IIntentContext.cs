@@ -1,12 +1,5 @@
-﻿using Chatbot.Domain.Models;
-using Database.MongoDb.Adapter.Models;
+﻿using Database.MongoDb.Adapter.Models;
 using MongoDB.Bson;
-using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Database.MongoDb.Adapter
 {
@@ -14,6 +7,8 @@ namespace Database.MongoDb.Adapter
     {
         public Task CreateAsync(BsonDocument document);
         public Task UpsertAsync(IntentsCollections intents);
+        public Task InsertManyAsync(List<IntentCollection> intents);
+        public Task<List<IntentCollection>> GetIntentsAsync();
         public Task<IntentsCollections> GetAsync();
     }
 }
