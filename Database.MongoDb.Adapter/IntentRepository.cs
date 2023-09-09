@@ -25,8 +25,14 @@ namespace Database.MongoDb.Adapter
         }
         public async Task AddIntents(string json)
         {
-            var intents = JsonConvert.DeserializeObject<Dictionary<string, List<IntentCollection>>>(json);
-            await _intentContext!.InsertManyAsync(intents.Values.FirstOrDefault());
+            var intents = JsonConvert.DeserializeObject<Dictionary<string, List<Intent>>>(json);
+            var intentsCollection = intents.Values?.FirstOrDefault()?.Select(x => new IntentCollection
+            {
+                Tag = x.Tag,
+                Pattern = x.Pattern,
+                Response = x.Response
+            });
+            await _intentContext!.InsertManyAsync(intentsCollection!);
         }
 
         public async Task<IEnumerable<Intent>> GetIntents()

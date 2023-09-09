@@ -27,7 +27,6 @@ namespace ChatbotRestAPI.Controller
         [HttpPost]
         public async Task<IActionResult> Create(object json)
         {
-            //await _intentRepository.UpsertAsync(json.ToString());
             await _intentRepository.AddIntents(json.ToString());
             return Ok();
         }
