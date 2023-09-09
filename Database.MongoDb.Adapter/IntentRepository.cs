@@ -14,15 +14,6 @@ namespace Database.MongoDb.Adapter
             _intentContext = intentContext;
         }
 
-        public async Task UpsertAsync(string json)
-        {
-            var intents = JsonConvert.DeserializeObject<Dictionary<string, List<Intent>>>(json);
-            var intentsCollection = new IntentsCollections()
-            {
-                Intents = JsonConvert.SerializeObject(intents.Values.FirstOrDefault())
-            };
-            await _intentContext!.UpsertAsync(intentsCollection);
-        }
         public async Task AddIntents(string json)
         {
             var intents = JsonConvert.DeserializeObject<Dictionary<string, List<Intent>>>(json);
@@ -37,7 +28,7 @@ namespace Database.MongoDb.Adapter
 
         public async Task<IEnumerable<Intent>> GetIntents()
         {
-            var intentCollection = await _intentContext.GetIntentsAsync();
+            var intentCollection = await _intentContext!.GetIntentsAsync();
             return intentCollection.Select(x => new Intent
             {
                 Tag = x.Tag,
@@ -46,17 +37,6 @@ namespace Database.MongoDb.Adapter
             });
         }
 
-        //public async Task<IEnumerable<Intent>> GetIntents()
-        //{
-        //    var intentCollection = await _intentContext.GetAsync();
-        //    var intentDtos = JsonConvert.DeserializeObject<List<IntentDto>>(intentCollection.Intents);
-        //    return intentDtos.Select(x => new Intent
-        //    {
-        //        Tag = x.Tag,
-        //        Pattern = JsonConvert.SerializeObject(x.Pattern),
-        //        Response = JsonConvert.SerializeObject(x.Response)
-        //    });
-        //}
         public Task RemoveIntent(string tag)
         {
             throw new NotImplementedException();
@@ -65,6 +45,18 @@ namespace Database.MongoDb.Adapter
         public Task UpdateIntent(Intent intent)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task UpsertAsync(string json)
+        {
+            var intent = JsonConvert.DeserializeObject<Intent>(json);
+            var intentCollection = new IntentCollection()
+            {
+                Tag = intent.Tag,
+                Pattern = intent.Pattern,
+                Response = intent.Response
+            };
+            await _intentContext!.UpsertAsync(intentCollection);
         }
     }
 }
