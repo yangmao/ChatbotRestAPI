@@ -5,8 +5,8 @@ namespace Database.MongoDb.Adapter.Models
 {
     public class IntentCollection
     {
-        [BsonElement("_id")]
-        public ObjectId? Id { get; set; }
+       
+        public ObjectId Id { get; set; }
         
         [BsonElement("tag")]
         public string? Tag { get; set; }
