@@ -9,7 +9,7 @@ namespace Chatbot.Domain.Ports
         Task UpsertAsync(string json);
         Task<IEnumerable<Intent>> GetIntents();
 
-        Task AddIntent(string json);
+        Task AddIntents(string json);
 
         Task RemoveIntent(string tag);
 

@@ -40,7 +40,7 @@ namespace Chatbot.Domain.Concrete
             string wrds = string.Empty;
             foreach (var intent in intents)
             {
-                    wrds += " " + intent.Pattern;
+                    wrds += " " + JsonConvert.SerializeObject(intent.Pattern);
             }
 
             var words = NLPHelper.Tokenize(wrds);
@@ -66,7 +66,7 @@ namespace Chatbot.Domain.Concrete
 
             foreach (var intent in intents)
             {
-                var patterns = JsonConvert.DeserializeObject<List<string>>(intent.Pattern);
+                var patterns = intent.Pattern;
                 foreach (var pattern in patterns)
                 {
                     var output_row = new int[labels.Count()];

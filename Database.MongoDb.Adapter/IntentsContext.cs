@@ -3,6 +3,7 @@ using Database.MongoDb.Adapter.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using System.Drawing;
 using static MongoDB.Driver.WriteConcern;
 
 namespace Database.MongoDb.Adapter
@@ -10,11 +11,13 @@ namespace Database.MongoDb.Adapter
     public class IntentsContext: IIntentContext
     {
         private readonly IMongoCollection<IntentsCollections> _intentsCollection;
+        private readonly IMongoCollection<IntentCollection> _intentCollection;
 
         public IntentsContext(IChatbotMongoDdatabaseSettings mongoDdatabaseSettings,IMongoClient mongoClient) 
         {
             var database = mongoClient.GetDatabase(mongoDdatabaseSettings.DatabaseName);
             _intentsCollection =  database.GetCollection<IntentsCollections>(mongoDdatabaseSettings.CollectionName);
+            _intentCollection = database.GetCollection<IntentCollection>(mongoDdatabaseSettings.CollectionName);
         }
 
         public async Task CreateAsync(BsonDocument document)
@@ -30,25 +33,19 @@ namespace Database.MongoDb.Adapter
                             replacement: intents);
         }
 
-        public async Task UpdateAsync(string tag, string pattern)
+        public async Task InsertManyAsync(List<IntentCollection> intents)
         {
-            //var id = ObjectId.Parse("5b9f91b9ecde570d2cf645e5"); // your document Id
-            //var builder = Builders<IntentsCollections>.Filter;
-            //var filter = builder.Eq(x => x.Id, id);
-            //var update = Builders<IntentsCollections>.Update
-            //    .AddToSet(x => x.Intents, new Intent
-            //    {
-                   
-
-            //    }) ;
-            //var updateResult = await _intentsCollection.UpdateOneAsync(filter, update);
+            await _intentCollection.InsertManyAsync(intents);
         }
-
         public async Task<IntentsCollections> GetAsync()
         {
             var cusor = await _intentsCollection.FindAsync(x=>x.Intents != null);
             return  await cusor.FirstAsync();
         }
 
+        public async Task<List<IntentCollection>> GetIntentsAsync()
+        {
+            return await _intentCollection.Find(_ => true).ToListAsync();
+        }
     }
 }

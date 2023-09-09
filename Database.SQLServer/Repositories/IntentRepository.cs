@@ -20,14 +20,14 @@ namespace Database.SQLServer.Repositories
             _context= context;
         }
 
-        public Task AddIntent(string json)
+        public Task AddIntents(string json)
         {
             throw new NotImplementedException();
         }
 
         public async Task UpsertAsync(string json)
         {
-            var intents = JsonConvert.DeserializeObject<Dictionary<string, List<IntentDto>>>(json);
+            var intents = JsonConvert.DeserializeObject<Dictionary<string, List<Intent>>>(json);
             var query = $"INSERT INTO Intent (Tag, Pattern, Response) VALUES ";
 
 
