@@ -18,12 +18,9 @@ namespace Database.MongoDb.Adapter
             _intentCollection = database.GetCollection<IntentCollection>(mongoDdatabaseSettings.CollectionName);
         }
 
-        public async Task UpsertAsync(IntentCollection intent)
+        public async Task<List<IntentCollection>> GetAllAsync()
         {
-             var result = await _intentCollection.ReplaceOneAsync(
-                            filter: new BsonDocument("tag", intent.Tag),
-                            options: new ReplaceOptions { IsUpsert = true },
-                            replacement: intent);
+            return await _intentCollection.Find(_ => true).ToListAsync();
         }
 
         public async Task InsertManyAsync(IEnumerable<IntentCollection> intents)
@@ -31,9 +28,20 @@ namespace Database.MongoDb.Adapter
             await _intentCollection.InsertManyAsync(intents);
         }
 
-        public async Task<List<IntentCollection>> GetIntentsAsync()
+        public async Task UpsertOneAsync(IntentCollection intent)
         {
-            return await _intentCollection.Find(_ => true).ToListAsync();
+             var result = await _intentCollection.ReplaceOneAsync(
+                            filter: new BsonDocument("tag", intent.Tag),
+                            options: new ReplaceOptions { IsUpsert = true },
+                            replacement: intent);
         }
+
+        public async Task<DeleteResult> DeleteOneAsync(string tag)
+        {
+            var filter = Builders<IntentCollection>.Filter
+                .Eq(r => r.Tag, tag);
+            return await _intentCollection.DeleteOneAsync(filter);
+        }
+        
     }
 }

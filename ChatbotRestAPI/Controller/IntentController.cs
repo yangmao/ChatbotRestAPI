@@ -1,13 +1,7 @@
-﻿using Chatbot.Domain.Interface;
-using Chatbot.Domain.Ports;
-using ChatbotAPI.Controllers;
+﻿using Chatbot.Domain.Ports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ChatbotRestAPI.Controller
 {
@@ -27,15 +21,63 @@ namespace ChatbotRestAPI.Controller
         [HttpPost]
         public async Task<IActionResult> Create(object json)
         {
-            await _intentRepository.AddIntents(json.ToString());
-            return Ok();
+            try
+            {
+                await _intentRepository.AddIntents(json.ToString());
+                return Created("", "successfully created.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(object json)
+        {
+            try
+            {
+                await _intentRepository.UpsertIntent(json.ToString());
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest();
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            await _intentRepository.GetIntents();
-            return Ok();
+            try
+            {
+                var intents = await _intentRepository.GetIntents();
+                if (intents == null)
+                    return NotFound();
+                return Ok(intents);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string tag)
+        {
+            try
+            {
+                await _intentRepository.RemoveIntent(tag);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest();
+            }
         }
     }
 }

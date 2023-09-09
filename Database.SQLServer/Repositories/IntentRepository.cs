@@ -1,14 +1,11 @@
 ﻿using Chatbot.Domain.Models;
 using Chatbot.Domain.Ports;
 using Dapper;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Database.SQLServer.Repositories
 {
@@ -25,7 +22,7 @@ namespace Database.SQLServer.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task UpsertAsync(string json)
+        public async Task UpsertIntent(string json)
         {
             var intents = JsonConvert.DeserializeObject<Dictionary<string, List<Intent>>>(json);
             var query = $"INSERT INTO Intent (Tag, Pattern, Response) VALUES ";
@@ -61,9 +58,5 @@ namespace Database.SQLServer.Repositories
             throw new NotImplementedException();
         }
 
-        public Task UpdateIntent(Intent intent)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
