@@ -14,6 +14,16 @@ namespace Database.MongoDb.Adapter
             _intentContext = intentContext;
         }
 
+        public async Task<IEnumerable<Intent>> GetIntents()
+        {
+            var intentCollection = await _intentContext!.GetAllAsync();
+            return intentCollection.Select(x => new Intent
+            {
+                Tag = x.Tag,
+                Pattern = x.Pattern,
+                Response = x.Response
+            });
+        }
         public async Task AddIntents(string json)
         {
             var intents = JsonConvert.DeserializeObject<Dictionary<string, List<Intent>>>(json);
@@ -25,29 +35,7 @@ namespace Database.MongoDb.Adapter
             });
             await _intentContext!.InsertManyAsync(intentsCollection!);
         }
-
-        public async Task<IEnumerable<Intent>> GetIntents()
-        {
-            var intentCollection = await _intentContext!.GetIntentsAsync();
-            return intentCollection.Select(x => new Intent
-            {
-                Tag = x.Tag,
-                Pattern = x.Pattern,
-                Response = x.Response
-            });
-        }
-
-        public Task RemoveIntent(string tag)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateIntent(Intent intent)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task UpsertAsync(string json)
+        public async Task UpsertIntent(string json)
         {
             var intent = JsonConvert.DeserializeObject<Intent>(json);
             var intentCollection = new IntentCollection()
@@ -56,7 +44,15 @@ namespace Database.MongoDb.Adapter
                 Pattern = intent.Pattern,
                 Response = intent.Response
             };
-            await _intentContext!.UpsertAsync(intentCollection);
+            await _intentContext!.UpsertOneAsync(intentCollection);
         }
+
+        public async Task RemoveIntent(string tag)
+        {
+            await _intentContext!.DeleteOneAsync(tag);
+        }
+
+       
+        
     }
 }
