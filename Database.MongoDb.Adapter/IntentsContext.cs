@@ -1,10 +1,6 @@
-﻿using Chatbot.Domain.Models;
-using Database.MongoDb.Adapter.Models;
+﻿using Database.MongoDb.Adapter.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
-using System.Drawing;
-using static MongoDB.Driver.WriteConcern;
 
 namespace Database.MongoDb.Adapter
 {

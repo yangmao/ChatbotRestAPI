@@ -1,5 +1,4 @@
-﻿
-using Chatbot.Domain;
+﻿using Chatbot.Domain;
 using Chatbot.Domain.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
