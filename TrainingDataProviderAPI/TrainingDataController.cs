@@ -1,6 +1,5 @@
 ﻿
 using Chatbot.Domain;
-using Chatbot.Domain.Concrete;
 using Chatbot.Domain.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,6 +20,7 @@ namespace TrainingDataProviderAPI
             _wordEmbeddingService = wordEmbeddingService;
         }
 
+        [HttpGet]
         [Route("/TrainingData")]
         public async Task<string> Get()
         {
@@ -35,6 +35,7 @@ namespace TrainingDataProviderAPI
             }
         }
 
+        [HttpGet]
         [Route("/SentenceInBOW")]
         public async Task<int[]> GetSentenceInBOW(string pattern)
         {

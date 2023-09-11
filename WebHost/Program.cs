@@ -1,8 +1,35 @@
 using Chatbot.WearingUp.Extensions;
+using ChatbotRestAPI.Middleware;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHealthChecks();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(x =>
+{
+    x.AddSecurityDefinition("X-API-KEY", new OpenApiSecurityScheme
+    {
+        Name = "X-API-KEY",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "ApiKeyScheme",
+        In = ParameterLocation.Header,
+        Description = "ApiKey must appear in header"
+    });
+    x.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "X-API-KEY"
+                },
+                In = ParameterLocation.Header
+            },
+            new string[]{}
+        }
+    });
+});
 
 // Add services to the container.
 builder.Services.AddCors(c =>
@@ -27,7 +54,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
-
+app.UseMiddleware<ApiKeyMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();

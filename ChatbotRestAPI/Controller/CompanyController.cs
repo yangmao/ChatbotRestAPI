@@ -1,14 +1,9 @@
-﻿using Chatbot.Domain.Concrete;
-using Chatbot.Domain.Interface;
+﻿using Chatbot.Domain.Interface;
 using ChatbotAPI.Controllers;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ChatbotRestAPI.Controller
 {
