@@ -1,4 +1,5 @@
 ﻿using Chatbot.Domain.Ports;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -6,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace ChatbotRestAPI.Controller
 {
     [ApiController]
-    [Route("[controller]")]
+    
     public class IntentController : ControllerBase
     {
         private readonly ILogger<IntentController> _logger;
@@ -19,6 +20,7 @@ namespace ChatbotRestAPI.Controller
         }
 
         [HttpPost]
+        [Route("UpsertAll")]
         public async Task<IActionResult> Create(object json)
         {
             try
@@ -29,11 +31,12 @@ namespace ChatbotRestAPI.Controller
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpPut]
+        [Route("UpsertOne")]
         public async Task<IActionResult> Update(object json)
         {
             try
@@ -44,11 +47,12 @@ namespace ChatbotRestAPI.Controller
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpGet]
+        [Route("GetAll")]
         public async Task<IActionResult> Get()
         {
             try
@@ -61,11 +65,12 @@ namespace ChatbotRestAPI.Controller
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpDelete]
+        [Route("DeleteOne")]
         public async Task<IActionResult> Delete(string tag)
         {
             try
@@ -76,7 +81,7 @@ namespace ChatbotRestAPI.Controller
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }
