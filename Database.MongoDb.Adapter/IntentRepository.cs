@@ -46,13 +46,9 @@ namespace Database.MongoDb.Adapter
             };
             await _intentContext!.UpsertOneAsync(intentCollection);
         }
-
         public async Task RemoveIntent(string tag)
         {
             await _intentContext!.DeleteOneAsync(tag);
         }
-
-       
-        
     }
 }
