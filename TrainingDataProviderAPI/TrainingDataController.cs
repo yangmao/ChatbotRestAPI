@@ -50,7 +50,37 @@ namespace TrainingDataProviderAPI
             }
         }
 
-        
+        [HttpGet]
+        [Route("/VocabularyCount")]
+        public async Task<int> GetVocabularyCount()
+        {
+            try
+            {
+                var words = await _wordEmbeddingService.GetVacabulary();
+                return words.Length;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Debug, new EventId(), null, ex);
+                return 0;
+            }
+        }
+
+        [HttpGet]
+        [Route("/LabelsCount")]
+        public async Task<int> GetLabelCount()
+        {
+            try
+            {
+                var labels = await _wordEmbeddingService.GetLables();
+                return labels.Length;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Debug, new EventId(), null, ex);
+                return 0;
+            }
+        }
 
 
     }
