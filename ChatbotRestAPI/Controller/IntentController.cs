@@ -1,5 +1,6 @@
 ﻿using Chatbot.Domain.Ports;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -21,6 +22,7 @@ namespace ChatbotRestAPI.Controller
 
         [HttpPost]
         [Route("UpsertAll")]
+        [EnableCors("AllowOrigin")]
         public async Task<IActionResult> Create(object json)
         {
             try
@@ -37,6 +39,7 @@ namespace ChatbotRestAPI.Controller
 
         [HttpPut]
         [Route("UpsertOne")]
+        [EnableCors("AllowOrigin")]
         public async Task<IActionResult> Update(object json)
         {
             try
