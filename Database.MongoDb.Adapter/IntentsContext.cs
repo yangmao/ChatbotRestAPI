@@ -21,6 +21,8 @@ namespace Database.MongoDb.Adapter
 
         public async Task InsertManyAsync(IEnumerable<IntentCollection> intents)
         {
+            var filter = Builders<IntentCollection>.Filter.Empty;
+            await _intentCollection.DeleteManyAsync(filter);
             await _intentCollection.InsertManyAsync(intents);
         }
 
