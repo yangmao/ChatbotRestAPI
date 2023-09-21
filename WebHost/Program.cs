@@ -31,16 +31,16 @@ builder.Services.AddSwaggerGen(x =>
         }
     });
 });
-
+var corsPolicy = "AllowOrigin";
 // Add services to the container.
 builder.Services.AddCors(c =>
 {
-    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader());
-    //c.AddPolicy(name: "_myAllowSpecificOrigins",
-    //                 policy =>
-    //                 {
-    //                     policy.WithOrigins("http://localhost:3000/");
-    //                 });
+    //c.AddPolicy(corsPolicy, options => options.AllowAnyOrigin().AllowAnyHeader());
+    c.AddPolicy("AllowOrigin",
+                     policy =>
+                     {
+                         policy.AllowAnyHeader().WithOrigins("https://localhost:44376");
+                     });
 });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -51,7 +51,7 @@ builder.Services.RegisterChatbot(builder.Configuration);
 
 var app = builder.Build();
 app.MapHealthChecks("/health");
-app.UseCors();
+app.UseCors(corsPolicy);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
