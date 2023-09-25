@@ -35,11 +35,10 @@ var corsPolicy = "AllowOrigin";
 // Add services to the container.
 builder.Services.AddCors(c =>
 {
-    //c.AddPolicy(corsPolicy, options => options.AllowAnyOrigin().AllowAnyHeader());
-    c.AddPolicy("AllowOrigin",
+    c.AddPolicy(corsPolicy,
                      policy =>
                      {
-                         policy.AllowAnyHeader().WithOrigins("https://localhost:44376");
+                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:44376");
                      });
 });
 builder.Services.AddControllers();

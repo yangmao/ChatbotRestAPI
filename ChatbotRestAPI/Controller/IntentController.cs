@@ -1,6 +1,4 @@
 ﻿using Chatbot.Domain.Ports;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -27,12 +25,13 @@ namespace ChatbotRestAPI.Controller
             try
             {
                 await _intentRepository.AddIntents(json.ToString());
-                return Created("", "successfully created.");
+                var intentsObject = await _intentRepository.GetIntents();
+                return Created("/UpsertAll", intentsObject);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest();
             }
         }
 
@@ -48,7 +47,7 @@ namespace ChatbotRestAPI.Controller
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest();
             }
         }
 
@@ -66,7 +65,7 @@ namespace ChatbotRestAPI.Controller
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest();
             }
         }
 
@@ -82,7 +81,7 @@ namespace ChatbotRestAPI.Controller
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest();
             }
         }
     }
