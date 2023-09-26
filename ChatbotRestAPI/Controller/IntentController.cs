@@ -37,7 +37,7 @@ namespace ChatbotRestAPI.Controller
 
         [HttpPut]
         [Route("UpsertOne")]
-        public async Task<IActionResult> Update(object json)
+        public async Task<IActionResult> Upsert(object json)
         {
             try
             {

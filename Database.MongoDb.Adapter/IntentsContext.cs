@@ -28,10 +28,13 @@ namespace Database.MongoDb.Adapter
 
         public async Task UpsertOneAsync(IntentCollection intent)
         {
-             var result = await _intentCollection.ReplaceOneAsync(
-                            filter: new BsonDocument("tag", intent.Tag),
-                            options: new ReplaceOptions { IsUpsert = true },
-                            replacement: intent);
+            var existedIntent = await _intentCollection.FindAsync(filter: new BsonDocument("tag", intent.Tag)).Result.ToListAsync();
+            if (existedIntent.Count != 0)
+                intent.Id = existedIntent.Select(x=>x.Id).First();
+             await _intentCollection.ReplaceOneAsync(
+                        filter: new BsonDocument("tag", intent.Tag),
+                        options: new ReplaceOptions { IsUpsert = true },
+                        replacement: intent);
         }
 
         public async Task<DeleteResult> DeleteOneAsync(string tag)

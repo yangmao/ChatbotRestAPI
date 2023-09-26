@@ -1,6 +1,7 @@
 ﻿using Chatbot.Domain.Models;
 using Chatbot.Domain.Ports;
 using Database.MongoDb.Adapter.Models;
+using MongoDB.Bson;
 using Newtonsoft.Json;
 
 namespace Database.MongoDb.Adapter
@@ -40,6 +41,7 @@ namespace Database.MongoDb.Adapter
             var intent = JsonConvert.DeserializeObject<Intent>(json);
             var intentCollection = new IntentCollection()
             {
+                Id = Guid.NewGuid(),
                 Tag = intent.Tag,
                 Pattern = intent.Pattern,
                 Response = intent.Response
