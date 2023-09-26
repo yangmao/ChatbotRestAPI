@@ -38,7 +38,7 @@ builder.Services.AddCors(c =>
     c.AddPolicy(corsPolicy,
                      policy =>
                      {
-                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:44376");
+                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://clientportal-test-muleutm2bq-uc.a.run.app");
                      });
 });
 builder.Services.AddControllers();
