@@ -38,7 +38,7 @@ builder.Services.AddCors(c =>
     c.AddPolicy(corsPolicy,
                      policy =>
                      {
-                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://geminibot-test.netlify.app,https://clientportal-test-muleutm2bq-uc.a.run.app");
+                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://geminibot-test.netlify.app","https://clientportal-test-muleutm2bq-uc.a.run.app");
                      });
 });
 builder.Services.AddControllers();
