@@ -1,4 +1,5 @@
 ﻿using Amazon.SecurityToken.Model;
+using Chatbot.Domain.Models;
 using Database.MongoDb.Adapter.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -15,14 +16,17 @@ namespace Database.MongoDb.Adapter
             _intentCollection = database.GetCollection<IntentCollection>(mongoDdatabaseSettings.CollectionName);
         }
 
-        public async Task<List<IntentCollection>> GetAllAsync()
+        public async Task<List<IntentCollection>> GetAllAsync(string userId)
         {
-            return await _intentCollection.Find(_ => true).ToListAsync();
+            var filter = Builders<IntentCollection>.Filter
+               .Eq(r => r.UserId, userId);
+            return await _intentCollection.Find(filter).ToListAsync();
         }
 
-        public async Task InsertManyAsync(IEnumerable<IntentCollection> intents)
+        public async Task InsertManyAsync(string userId,IEnumerable<IntentCollection> intents)
         {
-            var filter = Builders<IntentCollection>.Filter.Empty;
+            var filter = Builders<IntentCollection>.Filter
+                .Eq(r => r.UserId, userId);
             await _intentCollection.DeleteManyAsync(filter);
             await _intentCollection.InsertManyAsync(intents);
         }

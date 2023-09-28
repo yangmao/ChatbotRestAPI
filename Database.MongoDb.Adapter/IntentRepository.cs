@@ -16,7 +16,7 @@ namespace Database.MongoDb.Adapter
 
         public async Task<IEnumerable<Intent>> GetIntents(string userId)
         {
-            var intentCollection = await _intentContext!.GetAllAsync();
+            var intentCollection = await _intentContext!.GetAllAsync(userId);
             return intentCollection.Select(x => new Intent
             {
                 Tag = x.Tag,
@@ -34,7 +34,7 @@ namespace Database.MongoDb.Adapter
                 Pattern = x.Pattern,
                 Response = x.Response
             });
-            await _intentContext!.InsertManyAsync(intentsCollection!);
+            await _intentContext!.InsertManyAsync(userId,intentsCollection!);
         }
         public async Task UpsertIntent(string userId, string json)
         {
