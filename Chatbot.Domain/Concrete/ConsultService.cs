@@ -21,18 +21,18 @@ namespace Chatbot.Domain.Concrete
             _httpClient = httpClient;
             _configuration = configuration;
         }
-        public async Task<string> Consult(string query)
+        public async Task<string> Consult(string userId,string query)
         {
-            var words = await _wordEmbeddingService.GetVacabulary();
+            var words = await _wordEmbeddingService.GetVacabulary(userId);
             var inputdata = NLPHelper.BagOfWords(query, words);
             var content = new StringContent(JsonConvert.SerializeObject(new { instances = new int[][] { inputdata } }), Encoding.UTF8, "application/json");
             var modelUrl = _configuration.GetSection("ModelServer").Value+"/v1/models/chatbot_model:predict";
             var returnValue = await _httpClient.Client.PostAsync(modelUrl, content).Result.Content.ReadAsStringAsync();
 
-            return await ProcessResponse(returnValue);
+            return await ProcessResponse(userId,returnValue);
         }
 
-        private async Task<string> ProcessResponse(string responseResult)
+        private async Task<string> ProcessResponse(string userId,string responseResult)
         {
             var resultObj = JsonConvert.DeserializeObject<Dictionary<string, List<List<double>>>>(responseResult);
             var pridictionList = resultObj["predictions"][0];
@@ -42,9 +42,9 @@ namespace Chatbot.Domain.Concrete
             {
                 index = pridictionList.IndexOf(maxValue);
             }
-            var labels = await _wordEmbeddingService.GetLables();
+            var labels = await _wordEmbeddingService.GetLables(userId);
             var theLabel = index != null ? (labels.ToList())[index.Value] : "unknown";
-            var intents = await _wordEmbeddingService.GetIntents();
+            var intents = await _wordEmbeddingService.GetIntents(userId);
             var response = "";
             foreach (var intent in intents)
             {

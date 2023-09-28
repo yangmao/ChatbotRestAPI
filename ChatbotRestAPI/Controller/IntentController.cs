@@ -20,12 +20,12 @@ namespace ChatbotRestAPI.Controller
 
         [HttpPost]
         [Route("UpsertAll")]
-        public async Task<IActionResult> Create(object json)
+        public async Task<IActionResult> Create(string userId, object json)
         {
             try
             {
-                await _intentRepository.AddIntents(json.ToString());
-                var intentsObject = await _intentRepository.GetIntents();
+                await _intentRepository.AddIntents(userId,json.ToString());
+                var intentsObject = await _intentRepository.GetIntents(userId);
                 return Created("/UpsertAll", intentsObject);
             }
             catch (Exception ex)
@@ -37,11 +37,11 @@ namespace ChatbotRestAPI.Controller
 
         [HttpPut]
         [Route("UpsertOne")]
-        public async Task<IActionResult> Upsert(object json)
+        public async Task<IActionResult> Upsert(string userId, object json)
         {
             try
             {
-                await _intentRepository.UpsertIntent(json.ToString());
+                await _intentRepository.UpsertIntent(userId,json.ToString());
                 return Ok();
             }
             catch (Exception ex)
@@ -53,11 +53,11 @@ namespace ChatbotRestAPI.Controller
 
         [HttpGet]
         [Route("GetAll")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(string userId)
         {
             try
             {
-                var intents = await _intentRepository.GetIntents();
+                var intents = await _intentRepository.GetIntents(userId);
                 if (intents == null)
                     return NotFound();
                 return Ok(intents);
@@ -71,11 +71,11 @@ namespace ChatbotRestAPI.Controller
 
         [HttpDelete]
         [Route("DeleteOne")]
-        public async Task<IActionResult> Delete(string tag)
+        public async Task<IActionResult> Delete(string userId, string tag)
         {
             try
             {
-                await _intentRepository.RemoveIntent(tag);
+                await _intentRepository.RemoveIntent(userId,tag);
                 return Ok();
             }
             catch (Exception ex)

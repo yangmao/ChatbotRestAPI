@@ -18,9 +18,9 @@ namespace ChatbotRestAPI.Tests
         [Fact]
         public void Given_NullMsg_Return_ErrorMessage()
         {
-            _consultServiceMock.Setup(c => c.Consult(It.IsAny<string>())).Throws<ArgumentNullException>();
+            _consultServiceMock.Setup(c => c.Consult(It.IsAny<string>(),It.IsAny<string>())).Throws<ArgumentNullException>();
             var controller = new ChatController(_consultServiceMock.Object, _loggerMock.Object);
-            Assert.ThrowsAsync<Exception>(()=> controller.Chat(null));
+            Assert.ThrowsAsync<Exception>(()=> controller.Chat("userid",null));
         }
     }
 }

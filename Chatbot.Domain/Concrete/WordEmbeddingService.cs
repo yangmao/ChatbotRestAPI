@@ -15,14 +15,14 @@ namespace Chatbot.Domain.Concrete
         {
             _intentRepository = intentRepository;
         }
-        public async Task<IEnumerable<Intent>> GetIntents()
+        public async Task<IEnumerable<Intent>> GetIntents(string userId)
         {
-            return await _intentRepository.GetIntents();
+            return await _intentRepository.GetIntents(userId);
         }
 
-        public async Task<string[]> GetLables()
+        public async Task<string[]> GetLables(string userId)
         {
-            var intents = await GetIntents();
+            var intents = await GetIntents(userId);
             var labels = new List<string>();
             foreach (var intent in intents)
             {
@@ -34,9 +34,9 @@ namespace Chatbot.Domain.Concrete
             return lbls;
         }
 
-        public async Task<string[]> GetVacabulary()
+        public async Task<string[]> GetVacabulary(string userId)
         {
-            var intents = await GetIntents();
+            var intents = await GetIntents(userId);
             string wrds = string.Empty;
             foreach (var intent in intents)
             {
@@ -54,12 +54,12 @@ namespace Chatbot.Domain.Concrete
             return words;
         }
 
-        public async Task<string> GetTraining()
+        public async Task<string> GetTraining(string userId)
         {
             
-            var intents = await GetIntents();
-            var vacabulary = await GetVacabulary();
-            var labels = await GetLables();
+            var intents = await GetIntents(userId);
+            var vacabulary = await GetVacabulary(userId);
+            var labels = await GetLables(userId);
 
             var training = new List<int[]>();
             var output = new List<int[]>();

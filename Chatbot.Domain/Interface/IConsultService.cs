@@ -4,6 +4,6 @@ namespace Chatbot.Domain.Interface
 {
     public interface IConsultService
     {
-        public Task<string> Consult(string query);
+        public Task<string> Consult(string userId,string query);
     }
 }

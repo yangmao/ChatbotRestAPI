@@ -17,7 +17,6 @@ namespace ChatbotRestAPI.Controller
             _companyService = companyService;
         }
         [HttpPost]
-        [EnableCors("AllowOrigin")]
         public async Task<string> SendTitle(string title)
         {
             throw new NotImplementedException();

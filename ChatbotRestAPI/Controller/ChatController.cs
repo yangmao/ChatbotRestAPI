@@ -19,11 +19,11 @@ namespace ChatbotAPI.Controllers
 
         [HttpPost]
         [EnableCors("AllowOrigin")]
-        public async Task<string> Chat(string msg)
+        public async Task<string> Chat(string userId,string msg)
         {
             try
             {
-                return await _consultService.Consult(msg);
+                return await _consultService.Consult(userId, msg);
             }
             catch (Exception ex)
             {

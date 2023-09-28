@@ -17,12 +17,12 @@ namespace Database.SQLServer.Repositories
             _context= context;
         }
 
-        public Task AddIntents(string json)
+        public Task AddIntents(string userId, string json)
         {
             throw new NotImplementedException();
         }
 
-        public async Task UpsertIntent(string json)
+        public async Task UpsertIntent(string userId, string json)
         {
             var intents = JsonConvert.DeserializeObject<Dictionary<string, List<Intent>>>(json);
             var query = $"INSERT INTO Intent (Tag, Pattern, Response) VALUES ";
@@ -44,7 +44,7 @@ namespace Database.SQLServer.Repositories
             }
         }
 
-        public async Task<IEnumerable<Intent>> GetIntents()
+        public async Task<IEnumerable<Intent>> GetIntents(string userId)
         {
             var query = "SELECT * FROM Intent";
             using (var connection = _context.CreateConnection())
@@ -53,7 +53,7 @@ namespace Database.SQLServer.Repositories
             }
         }
 
-        public Task RemoveIntent(string tag)
+        public Task RemoveIntent(string userId, string tag)
         {
             throw new NotImplementedException();
         }

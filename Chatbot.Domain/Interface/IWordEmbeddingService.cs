@@ -6,11 +6,11 @@ namespace Chatbot.Domain.Interface
 {
     public interface IWordEmbeddingService
     {
-        Task<IEnumerable<Intent>> GetIntents();
-        Task<string[]> GetVacabulary();
+        Task<IEnumerable<Intent>> GetIntents(string userId);
+        Task<string[]> GetVacabulary(string userId);
 
-        Task<string[]> GetLables();
+        Task<string[]> GetLables(string userId);
 
-        Task<string> GetTraining();
+        Task<string> GetTraining(string userId);
     }
 }

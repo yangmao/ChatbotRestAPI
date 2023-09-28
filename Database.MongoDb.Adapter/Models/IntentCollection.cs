@@ -7,7 +7,10 @@ namespace Database.MongoDb.Adapter.Models
     {
        
         public Guid Id { get; set; }
-        
+
+        [BsonElement("userId")]
+        public string? UserId { get; set; }
+
         [BsonElement("tag")]
         public string? Tag { get; set; }
 

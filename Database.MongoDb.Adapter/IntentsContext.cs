@@ -1,4 +1,5 @@
-﻿using Database.MongoDb.Adapter.Models;
+﻿using Amazon.SecurityToken.Model;
+using Database.MongoDb.Adapter.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -28,7 +29,12 @@ namespace Database.MongoDb.Adapter
 
         public async Task UpsertOneAsync(IntentCollection intent)
         {
-            var existedIntent = await _intentCollection.FindAsync(filter: new BsonDocument("tag", intent.Tag)).Result.ToListAsync();
+            var filter = Builders<IntentCollection>.Filter
+               .Eq(r => r.Tag, intent.Tag) & Builders<IntentCollection>.Filter
+               .Eq(r => r.UserId, intent.UserId);
+
+            var existedIntent = await _intentCollection.FindAsync(filter).Result.ToListAsync();
+
             if (existedIntent.Count != 0)
                 intent.Id = existedIntent.Select(x=>x.Id).First();
              await _intentCollection.ReplaceOneAsync(
@@ -37,10 +43,12 @@ namespace Database.MongoDb.Adapter
                         replacement: intent);
         }
 
-        public async Task<DeleteResult> DeleteOneAsync(string tag)
+        public async Task<DeleteResult> DeleteOneAsync(string userId,string tag)
         {
             var filter = Builders<IntentCollection>.Filter
-                .Eq(r => r.Tag, tag);
+                .Eq(r => r.Tag, tag) & Builders<IntentCollection>.Filter
+                .Eq(r => r.UserId, userId);
+
             return await _intentCollection.DeleteOneAsync(filter);
         }
         
