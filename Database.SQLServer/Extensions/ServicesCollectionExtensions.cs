@@ -1,5 +1,4 @@
 ﻿using Chatbot.Domain.Ports;
-using Database.SQLServer.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Database.SQLServer.Extensions
@@ -10,7 +9,6 @@ namespace Database.SQLServer.Extensions
         {
            
             services.AddSingleton<IDapperContext,DapperContext>();
-            services.AddScoped<IIntentRepository>(x=> new IntentRepository(services.BuildServiceProvider().GetService<IDapperContext>()));
         }
     }
 }

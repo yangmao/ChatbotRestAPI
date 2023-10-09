@@ -13,7 +13,7 @@ namespace Chatbot.WearingUp.Extensions
         {
             services.AddDomainServices();
             services.RegisterMongoDB(configuration);
-            //services.RegisterSqlServerDB();
+            services.RegisterSqlServerDB();
         }
     }
 }
