@@ -1,6 +1,5 @@
 using Chatbot.WearingUp.Extensions;
 using ChatbotRestAPI.Middleware;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +38,7 @@ builder.Services.AddCors(c =>
                      policy =>
                      {
                          policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:44376", "https://geminibot-test.netlify.app","https://clientportal-test-muleutm2bq-uc.a.run.app");
+                         
                      });
 });
 builder.Services.AddControllers();

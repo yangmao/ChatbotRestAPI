@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 namespace ChatbotAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class ChatController : ControllerBase
     {
         private readonly ILogger<ChatController> _logger;
@@ -18,8 +17,8 @@ namespace ChatbotAPI.Controllers
         }
 
         [HttpPost]
-        [EnableCors("AllowOrigin")]
-        public async Task<string> Chat(string userId,string msg)
+        [Route("/Chat")]
+        public async Task<string> Chat(string userId, string msg)
         {
             try
             {
