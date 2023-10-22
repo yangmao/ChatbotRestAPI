@@ -37,7 +37,7 @@ builder.Services.AddCors(c =>
     c.AddPolicy(corsPolicy,
                      policy =>
                      {
-                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:44376", "https://geminibot-test.netlify.app","https://clientportal-test-muleutm2bq-uc.a.run.app");
+                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://geminibot-free.netlify.app", "https://geminibot-test.netlify.app","https://clientportal-test-muleutm2bq-uc.a.run.app");
                          
                      });
 });

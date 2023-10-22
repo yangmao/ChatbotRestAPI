@@ -1,1 +1,1 @@
-docker push gcr.io/chatbotrest-382018/chatbotrestapi-test
+docker push gcr.io/chatbotrest-382018/chatbotrestapi-free
