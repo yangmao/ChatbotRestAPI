@@ -1,1 +1,1 @@
-docker build -f Dockerfile . -t chatbotrestapi-free 
+docker build -f Dockerfile . -t chatbotrestapi-gemini 
