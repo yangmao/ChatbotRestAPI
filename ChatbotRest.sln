@@ -29,9 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatbotRestAPI", "ChatbotRe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainingDataProviderAPI", "TrainingDataProviderAPI\TrainingDataProviderAPI.csproj", "{750F8DE7-0C11-4F8B-8FE8-36BAA7E81CFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.MongoDb.Adapter", "Database.MongoDb.Adapter\Database.MongoDb.Adapter.csproj", "{64E5C1F3-8114-499C-8BCA-BF94F80D2A6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.MongoDb.Adapter", "Database.MongoDb.Adapter\Database.MongoDb.Adapter.csproj", "{64E5C1F3-8114-499C-8BCA-BF94F80D2A6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatbot.WearingUp", "Chatbot.WearingUp\Chatbot.WearingUp.csproj", "{766C4BF5-7FD1-4792-816D-E42D21005471}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatbot.WearingUp", "Chatbot.WearingUp\Chatbot.WearingUp.csproj", "{766C4BF5-7FD1-4792-816D-E42D21005471}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
