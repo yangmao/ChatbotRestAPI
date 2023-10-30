@@ -47,6 +47,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.RegisterChatbot(builder.Configuration);
 
+builder.Services.AddScoped<Chatbot.Domain.Services.JsonValidatorService>();
 
 var app = builder.Build();
 app.MapHealthChecks("/health");
