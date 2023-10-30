@@ -20,8 +20,8 @@ env:
   PROJECT_ID: ${{ secrets.PROJECT_ID}}
   SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
   GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
-  SERVICE: chatbotrest-test  # TODO: update  both Artifact Registry name and cloud run service
-  IMAGE: chatbotrest-test
+  SERVICE: chatbotrestapi-test  # TODO: update  both Artifact Registry name and cloud run service
+  IMAGE: chatbotrestapi-test
   REGION: us-central1 # TODO: update Cloud Run service region
   GIT_TAG: v0.1.0
 
