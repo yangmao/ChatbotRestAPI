@@ -30,11 +30,16 @@ builder.Services.AddSwaggerGen(x =>
         }
     });
 });
-
+var corsPolicy = "AllowOrigin";
 // Add services to the container.
 builder.Services.AddCors(c =>
 {
-    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader());
+    c.AddPolicy(corsPolicy,
+                     policy =>
+                     {
+                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://bqqchatbot.netlify.app", "https://geminibot-free.netlify.app", "https://geminibot-test.netlify.app","https://clientportal-test-muleutm2bq-uc.a.run.app");
+                         
+                     });
 });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -45,13 +50,22 @@ builder.Services.RegisterChatbot(builder.Configuration);
 
 var app = builder.Build();
 app.MapHealthChecks("/health");
-app.UseCors();
+app.UseCors(corsPolicy);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "MyAPI");
+        options.RoutePrefix = string.Empty;
+    });
 }
 app.UseHttpsRedirection();
 app.UseMiddleware<ApiKeyMiddleware>();

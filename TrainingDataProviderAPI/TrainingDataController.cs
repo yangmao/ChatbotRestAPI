@@ -21,11 +21,11 @@ namespace TrainingDataProviderAPI
 
         [HttpGet]
         [Route("/TrainingData")]
-        public async Task<string> Get()
+        public async Task<string> Get(string userId)
         {
             try
             {
-                return await _wordEmbeddingService.GetTraining();
+                return await _wordEmbeddingService.GetTraining(userId);
             }
             catch (Exception ex)
             {
@@ -36,11 +36,11 @@ namespace TrainingDataProviderAPI
 
         [HttpGet]
         [Route("/SentenceInBOW")]
-        public async Task<int[]> GetSentenceInBOW(string pattern)
+        public async Task<int[]> GetSentenceInBOW(string userId, string pattern)
         {
             try
             {
-                var words = await _wordEmbeddingService.GetVacabulary();
+                var words = await _wordEmbeddingService.GetVacabulary(userId);
                 return NLPHelper.BagOfWords(pattern, words);
             }
             catch (Exception ex)
@@ -50,7 +50,37 @@ namespace TrainingDataProviderAPI
             }
         }
 
-        
+        [HttpGet]
+        [Route("/VocabularyCount")]
+        public async Task<int> GetVocabularyCount(string userId)
+        {
+            try
+            {
+                var words = await _wordEmbeddingService.GetVacabulary(userId);
+                return words.Length;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Debug, new EventId(), null, ex);
+                return 0;
+            }
+        }
+
+        [HttpGet]
+        [Route("/LabelsCount")]
+        public async Task<int> GetLabelCount(string userId)
+        {
+            try
+            {
+                var labels = await _wordEmbeddingService.GetLables(userId);
+                return labels.Length;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Debug, new EventId(), null, ex);
+                return 0;
+            }
+        }
 
 
     }

@@ -1,4 +1,6 @@
-﻿using Database.MongoDb.Adapter.Models;
+﻿using Amazon.SecurityToken.Model;
+using Chatbot.Domain.Models;
+using Database.MongoDb.Adapter.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -14,28 +16,43 @@ namespace Database.MongoDb.Adapter
             _intentCollection = database.GetCollection<IntentCollection>(mongoDdatabaseSettings.CollectionName);
         }
 
-        public async Task<List<IntentCollection>> GetAllAsync()
+        public async Task<List<IntentCollection>> GetAllAsync(string userId)
         {
-            return await _intentCollection.Find(_ => true).ToListAsync();
+            var filter = Builders<IntentCollection>.Filter
+               .Eq(r => r.UserId, userId);
+            return await _intentCollection.Find(filter).ToListAsync();
         }
 
-        public async Task InsertManyAsync(IEnumerable<IntentCollection> intents)
+        public async Task InsertManyAsync(string userId,IEnumerable<IntentCollection> intents)
         {
+            var filter = Builders<IntentCollection>.Filter
+                .Eq(r => r.UserId, userId);
+            await _intentCollection.DeleteManyAsync(filter);
             await _intentCollection.InsertManyAsync(intents);
         }
 
         public async Task UpsertOneAsync(IntentCollection intent)
         {
-             var result = await _intentCollection.ReplaceOneAsync(
-                            filter: new BsonDocument("tag", intent.Tag),
-                            options: new ReplaceOptions { IsUpsert = true },
-                            replacement: intent);
+            var filter = Builders<IntentCollection>.Filter
+               .Eq(r => r.Tag, intent.Tag) & Builders<IntentCollection>.Filter
+               .Eq(r => r.UserId, intent.UserId);
+
+            var existedIntent = await _intentCollection.FindAsync(filter).Result.ToListAsync();
+
+            if (existedIntent.Count != 0)
+                intent.Id = existedIntent.Select(x=>x.Id).First();
+             await _intentCollection.ReplaceOneAsync(
+                        filter: new BsonDocument("tag", intent.Tag),
+                        options: new ReplaceOptions { IsUpsert = true },
+                        replacement: intent);
         }
 
-        public async Task<DeleteResult> DeleteOneAsync(string tag)
+        public async Task<DeleteResult> DeleteOneAsync(string userId,string tag)
         {
             var filter = Builders<IntentCollection>.Filter
-                .Eq(r => r.Tag, tag);
+                .Eq(r => r.Tag, tag) & Builders<IntentCollection>.Filter
+                .Eq(r => r.UserId, userId);
+
             return await _intentCollection.DeleteOneAsync(filter);
         }
         
