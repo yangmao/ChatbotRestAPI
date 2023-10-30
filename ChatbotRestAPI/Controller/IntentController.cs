@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-
 namespace ChatbotRestAPI.Controller
 {
     [ApiController]
@@ -33,7 +32,6 @@ namespace ChatbotRestAPI.Controller
             {
                 _logger.LogError(ex.Message);
                 return BadRequest();
-
             }
         }
 
