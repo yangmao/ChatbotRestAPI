@@ -10,7 +10,7 @@
 #
 # For more support on how to run the workflow, please visit https://github.com/google-github-actions/setup-gcloud/tree/master/example-workflows/gke-kustomize
 
-name: Build and Deploy to GCR
+name: Build and Deploy
 
 on:
   push:
@@ -49,12 +49,15 @@ jobs:
         run: |-
           gcloud auth configure-docker ${{ env.GAR_LOCATION }}-docker.pkg.dev
     
-      - name: App Settings Variable Substitution
+      - name: AppSettings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
             files: '**/appsettings.json'
         env:
+            ChatbotMongoDatabaseSettings.ConnectionString: ${{vars.MONGO_CONNECTIONSTRING}}
+            ConnectionStrings.SQLConnectionString: ${{vars.SQL_CONNECTIONSTRING}}
             ModelServer: ${{ vars.MODEL_SERVER }}
+            X-API-KEY: ${{secrets.TEST_API_KEY}}
             
       - name: Build and Push Container
         run: |-
