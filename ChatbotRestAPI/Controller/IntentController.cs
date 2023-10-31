@@ -26,10 +26,16 @@ namespace ChatbotRestAPI.Controller
         {
             try
             {
-                await _intentRepository.AddIntents(userId,json.ToString());
-                var intentsObject = await _intentRepository.GetIntents(userId);
-                return Created("/UpsertAll", intentsObject);
-
+                if (_jsonValidatorService.IsValidJson(json.ToString()))
+                {
+                    await _intentRepository.AddIntents(userId, json.ToString());
+                    var intentsObject = await _intentRepository.GetIntents(userId);
+                    return Created("/Create", intentsObject);
+                }
+                else
+                {
+                    return BadRequest("Invalid JSON format");
+                }
             }
             catch (Exception ex)
             {
@@ -80,30 +86,6 @@ namespace ChatbotRestAPI.Controller
             {
                 await _intentRepository.RemoveIntent(userId,tag);
                 return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest();
-            }
-        }
-
-        [HttpPost]
-        [Route("ValidateAndCreate")]
-        public async Task<IActionResult> ValidateAndCreate(string userId, object json)
-        {
-            try
-            {
-                if (_jsonValidatorService.IsValidJson(json.ToString()))
-                {
-                    await _intentRepository.AddIntents(userId, json.ToString());
-                    var intentsObject = await _intentRepository.GetIntents(userId);
-                    return Created("/ValidateAndCreate", intentsObject);
-                }
-                else
-                {
-                    return BadRequest("Invalid JSON format");
-                }
             }
             catch (Exception ex)
             {
