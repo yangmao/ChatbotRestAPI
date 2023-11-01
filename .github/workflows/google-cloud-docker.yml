@@ -29,7 +29,7 @@ jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
-    environment: staging,test,production
+    environment: staging
 
     permissions:
       contents: 'read'
