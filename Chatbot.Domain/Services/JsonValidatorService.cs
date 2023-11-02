@@ -3,7 +3,12 @@ using Newtonsoft.Json.Linq;
 
 namespace Chatbot.Domain.Services
 {
-    public class JsonValidatorService
+    public interface IJsonValidatorService
+    {
+        bool IsValidJson(string jsonString);
+    }
+
+    public class JsonValidatorService : IJsonValidatorService
     {
         public bool IsValidJson(string jsonString)
         {

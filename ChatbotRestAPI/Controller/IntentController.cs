@@ -6,18 +6,18 @@ using Chatbot.Domain.Services;
 namespace ChatbotRestAPI.Controller
 {
     [ApiController]
-    
+
     public class IntentController : ControllerBase
     {
         private readonly ILogger<IntentController> _logger;
         private readonly IIntentRepository _intentRepository;
-        private readonly JsonValidatorService _jsonValidatorService;
+        private readonly IJsonValidatorService _jsonValidatorService;
 
-        public IntentController(IIntentRepository intentRepository, ILogger<IntentController> logger, JsonValidatorService jsonValidatorService)
+        public IntentController(IIntentRepository intentRepository, ILogger<IntentController> logger, IJsonValidatorService jsonValidatorService)
         {
             _intentRepository = intentRepository;
             _logger = logger;
-            _jsonValidatorService = jsonValidatorService; 
+            _jsonValidatorService = jsonValidatorService;
         }
 
         [HttpPost]
