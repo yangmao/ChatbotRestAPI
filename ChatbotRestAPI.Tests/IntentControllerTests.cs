@@ -12,13 +12,13 @@ namespace ChatbotRestAPI.Tests
     {
         private readonly Mock<ILogger<IntentController>> _loggerMock;
         private readonly Mock<IIntentRepository> _intentRepositoryMock;
-        private readonly Mock<JsonValidatorService> _jsonValidatorServiceMock;
+        private readonly Mock<IJsonValidatorService> _jsonValidatorServiceMock;
 
         public IntentControllerTests()
         {
             _loggerMock = new Mock<ILogger<IntentController>>();
             _intentRepositoryMock = new Mock<IIntentRepository>();
-            _jsonValidatorServiceMock = new Mock<JsonValidatorService>();
+            _jsonValidatorServiceMock = new Mock<IJsonValidatorService>();
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace ChatbotRestAPI.Tests
             var result = await controller.Create(userId, validJson);
 
             // Assert
-            Assert.IsType<CreatedAtActionResult>(result);
+            Assert.IsType<CreatedResult>(result);
         }
 
         [Fact]
