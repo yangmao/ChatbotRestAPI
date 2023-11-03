@@ -1,7 +1,7 @@
 ﻿using Chatbot.Domain.Ports;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Chatbot.Domain.Concrete;
+using Chatbot.Domain.Interface;
 
 namespace ChatbotRestAPI.Controller
 {

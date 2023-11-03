@@ -1,10 +1,10 @@
 ﻿using Chatbot.Domain.Models;
 using Chatbot.Domain.Ports;
-using Chatbot.Domain.Concrete;
 using ChatbotRestAPI.Controller;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Chatbot.Domain.Interface;
 
 namespace ChatbotRestAPI.Tests
 {
