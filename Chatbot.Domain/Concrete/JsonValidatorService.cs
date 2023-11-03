@@ -1,4 +1,4 @@
-﻿using Chatbot.Domain.Concrete;
+﻿using Chatbot.Domain.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

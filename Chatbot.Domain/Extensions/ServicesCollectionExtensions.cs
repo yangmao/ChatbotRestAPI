@@ -15,7 +15,7 @@ namespace Chatbot.Domain.Extensions
             services.AddScoped<IWordEmbeddingService>(x =>
                new WordEmbeddingService(services.BuildServiceProvider().GetService<IIntentRepository>()));
             services.AddSingleton<IHttpHandler, HttpHandler>();
-            services.AddSingleton<IJsonValidatorService, JsonValidatorService>();
+            services.AddScoped<IJsonValidatorService, JsonValidatorService>();
             services.AddScoped<IConsultService>(x =>
                new ConsultService(services.BuildServiceProvider().GetService<IWordEmbeddingService>(), services.BuildServiceProvider().GetService<IHttpHandler>(), services.BuildServiceProvider().GetService<IConfiguration>()));
 
