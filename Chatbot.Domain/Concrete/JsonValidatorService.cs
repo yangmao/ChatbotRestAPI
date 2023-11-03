@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Chatbot.Domain.Interface;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Chatbot.Domain.Services
+namespace Chatbot.Domain.Concrete
 {
-    public class JsonValidatorService
+    public class JsonValidatorService : IJsonValidatorService
     {
         public bool IsValidJson(string jsonString)
         {

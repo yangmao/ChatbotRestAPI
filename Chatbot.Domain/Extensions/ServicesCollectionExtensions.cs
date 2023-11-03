@@ -1,7 +1,6 @@
 ﻿using Chatbot.Domain.Concrete;
 using Chatbot.Domain.Interface;
 using Chatbot.Domain.Ports;
-using Chatbot.Domain.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
@@ -16,7 +15,7 @@ namespace Chatbot.Domain.Extensions
             services.AddScoped<IWordEmbeddingService>(x =>
                new WordEmbeddingService(services.BuildServiceProvider().GetService<IIntentRepository>()));
             services.AddSingleton<IHttpHandler, HttpHandler>();
-            services.AddScoped<JsonValidatorService>();
+            services.AddScoped<IJsonValidatorService, JsonValidatorService>();
             services.AddScoped<IConsultService>(x =>
                new ConsultService(services.BuildServiceProvider().GetService<IWordEmbeddingService>(), services.BuildServiceProvider().GetService<IHttpHandler>(), services.BuildServiceProvider().GetService<IConfiguration>()));
 
