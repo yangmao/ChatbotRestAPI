@@ -1,4 +1,4 @@
-﻿namespace Chatbot.Domain.Concrete
+﻿namespace Chatbot.Domain.Interface
 {
     public interface IJsonValidatorService
     {
