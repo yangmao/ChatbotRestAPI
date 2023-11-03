@@ -1,4 +1,4 @@
-﻿using Chatbot.Domain.Services;
+﻿using Chatbot.Domain.Concrete;
 
 namespace Chatbot.Domain.Tests
 {
