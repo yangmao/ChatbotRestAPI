@@ -55,6 +55,9 @@ namespace Database.MongoDb.Adapter
 
             return await _intentCollection.DeleteOneAsync(filter);
         }
-        
+        public async Task<IntentCollection?> FindAsync(FilterDefinition<IntentCollection> filter)
+        {
+            return await _intentCollection.Find(filter).FirstOrDefaultAsync();
+        }
     }
 }

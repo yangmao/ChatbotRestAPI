@@ -10,5 +10,6 @@ namespace Database.MongoDb.Adapter
         public Task<List<IntentCollection>> GetAllAsync(string userId);
         public Task InsertManyAsync(string userId,IEnumerable<IntentCollection> intents);
         public Task<DeleteResult> DeleteOneAsync(string userId, string tag);
+        Task<IntentCollection?> FindAsync(FilterDefinition<IntentCollection> filter);
     }
 }

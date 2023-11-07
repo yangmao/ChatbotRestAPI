@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Chatbot.Domain.Interface;
+using Newtonsoft.Json;
+using Chatbot.Domain.Models;
 
 namespace ChatbotRestAPI.Controller
 {
     [ApiController]
-    
+
     public class IntentController : ControllerBase
     {
         private readonly ILogger<IntentController> _logger;
@@ -21,14 +23,41 @@ namespace ChatbotRestAPI.Controller
         }
 
         [HttpPost]
-        [Route("UpsertAll")]
+        [Route("Create")]
         public async Task<IActionResult> Create(string userId, object json)
         {
             try
             {
                 if (_jsonValidatorService.IsValidJson(json.ToString()))
                 {
+                    var intents = JsonConvert.DeserializeObject<Dictionary<string, List<Intent>>>(json.ToString());
+
+                    // Check for tag uniqueness when adding
+                    bool tagExists = false;
+
+                    foreach (var intentList in intents.Values)
+                    {
+                        foreach (var intent in intentList)
+                        {
+                            if (string.IsNullOrEmpty(intent.Tag) || await IsTagAlreadyExists(userId, intent.Tag))
+                            {
+                                tagExists = true;
+                                break;
+                            }
+                        }
+                        if (tagExists)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (tagExists)
+                    {
+                        return BadRequest("Invalid or duplicate tag detected. Please provide unique and non-empty tags.");
+                    }
+
                     await _intentRepository.AddIntents(userId, json.ToString());
+
                     var intentsObject = await _intentRepository.GetIntents(userId);
                     return Created("/Create", intentsObject);
                 }
@@ -45,13 +74,20 @@ namespace ChatbotRestAPI.Controller
         }
 
         [HttpPut]
-        [Route("UpsertOne")]
-        public async Task<IActionResult> Upsert(string userId, object json)
+        [Route("Update")]
+        public async Task<IActionResult> Update(string userId, object json)
         {
             try
             {
-                await _intentRepository.UpsertIntent(userId,json.ToString());
-                return Ok();
+                if (_jsonValidatorService.IsValidJson(json.ToString()))
+                {
+                    await _intentRepository.UpsertIntent(userId, json.ToString());
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Invalid JSON format");
+                }
             }
             catch (Exception ex)
             {
@@ -92,6 +128,11 @@ namespace ChatbotRestAPI.Controller
                 _logger.LogError(ex.Message);
                 return BadRequest();
             }
+        }
+        private async Task<bool> IsTagAlreadyExists(string userId, string tag)
+        {
+            var intents = await _intentRepository.GetIntents(userId);
+            return intents.Any(intent => intent.Tag == tag);
         }
     }
 }
