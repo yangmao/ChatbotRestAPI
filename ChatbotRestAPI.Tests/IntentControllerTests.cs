@@ -86,6 +86,44 @@ public class IntentControllerTests
         Assert.NotNull(result);
     }
 
-    // Add similar tests for Update and Delete actions
+    [Fact]
+    public async Task CreateOne_ValidJson_Success()
+    {
+        // Arrange
+        var userId = "testUser";
+        var validJson = "{\"tag\":\"tag1\"}";
+        var intentRepositoryMock = new Mock<IIntentRepository>();
+        var jsonValidatorServiceMock = new Mock<IJsonValidatorService>();
+        intentRepositoryMock.Setup(repo => repo.AddIntents(userId, It.IsAny<string>())).Returns(Task.CompletedTask);
+        jsonValidatorServiceMock.Setup(service => service.IsValidJson(validJson)).Returns(true);
+
+        var controller = new IntentController(intentRepositoryMock.Object, null, jsonValidatorServiceMock.Object);
+
+        // Act
+        var result = await controller.CreateOne(userId, validJson) as CreatedResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("/CreateOne", result.Location);
+    }
+
+    [Fact]
+    public async Task CreateOne_InvalidJson_BadRequest()
+    {
+        // Arrange
+        var userId = "testUser";
+        var invalidJson = "invalid-json";
+        var jsonValidatorServiceMock = new Mock<IJsonValidatorService>();
+        jsonValidatorServiceMock.Setup(service => service.IsValidJson(invalidJson)).Returns(false);
+
+        var controller = new IntentController(null, null, jsonValidatorServiceMock.Object);
+
+        // Act
+        var result = await controller.CreateOne(userId, invalidJson) as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("Invalid JSON format", result.Value);
+    }
 }
 

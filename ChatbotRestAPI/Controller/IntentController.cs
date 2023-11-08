@@ -73,6 +73,39 @@ namespace ChatbotRestAPI.Controller
             }
         }
 
+        [HttpPost]
+        [Route("CreateOne")]
+        public async Task<IActionResult> CreateOne(string userId, object json)
+        {
+            try
+            {
+                if (_jsonValidatorService.IsValidJson(json.ToString()))
+                {
+                    var intent = JsonConvert.DeserializeObject<Intent>(json.ToString());
+
+                    // Check for tag uniqueness when adding
+                    if (string.IsNullOrEmpty(intent.Tag) || await IsTagAlreadyExists(userId, intent.Tag))
+                    {
+                        return BadRequest("Invalid or duplicate tag detected. Please provide unique and non-empty tags.");
+                    }
+
+                    await _intentRepository.AddIntents(userId, json.ToString());
+
+                    var intentsObject = await _intentRepository.GetIntents(userId);
+                    return Created("/CreateOne", intentsObject);
+                }
+                else
+                {
+                    return BadRequest("Invalid JSON format");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest();
+            }
+        }
+
         [HttpPut]
         [Route("Update")]
         public async Task<IActionResult> Update(string userId, object json)
