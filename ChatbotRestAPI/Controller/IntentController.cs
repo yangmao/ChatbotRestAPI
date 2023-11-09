@@ -23,41 +23,14 @@ namespace ChatbotRestAPI.Controller
         }
 
         [HttpPost]
-        [Route("Create")]
+        [Route("UpsertAll")]
         public async Task<IActionResult> Create(string userId, object json)
         {
             try
             {
                 if (_jsonValidatorService.IsValidJson(json.ToString()))
                 {
-                    var intents = JsonConvert.DeserializeObject<Dictionary<string, List<Intent>>>(json.ToString());
-
-                    // Check for tag uniqueness when adding
-                    bool tagExists = false;
-
-                    foreach (var intentList in intents.Values)
-                    {
-                        foreach (var intent in intentList)
-                        {
-                            if (string.IsNullOrEmpty(intent.Tag) || await IsTagAlreadyExists(userId, intent.Tag))
-                            {
-                                tagExists = true;
-                                break;
-                            }
-                        }
-                        if (tagExists)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (tagExists)
-                    {
-                        return BadRequest("Invalid or duplicate tag detected. Please provide unique and non-empty tags.");
-                    }
-
-                    await _intentRepository.UpsertOne(userId, json.ToString());
-
+                    await _intentRepository.UpsertIntent(userId, json.ToString());
                     var intentsObject = await _intentRepository.GetIntents(userId);
                     return Created("/Create", intentsObject);
                 }
