@@ -26,7 +26,7 @@ namespace Database.MongoDb.Adapter
             });
         }
 
-        public async Task AddIntents(string userId, string json)
+        public async Task UpsertOne(string userId, string json)
         {
             var intents = JsonConvert.DeserializeObject<Dictionary<string, List<Intent>>>(json);
 

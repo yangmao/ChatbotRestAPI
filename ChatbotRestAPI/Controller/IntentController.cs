@@ -56,7 +56,7 @@ namespace ChatbotRestAPI.Controller
                         return BadRequest("Invalid or duplicate tag detected. Please provide unique and non-empty tags.");
                     }
 
-                    await _intentRepository.AddIntents(userId, json.ToString());
+                    await _intentRepository.UpsertOne(userId, json.ToString());
 
                     var intentsObject = await _intentRepository.GetIntents(userId);
                     return Created("/Create", intentsObject);
@@ -89,7 +89,7 @@ namespace ChatbotRestAPI.Controller
                         return BadRequest("Invalid or duplicate tag detected. Please provide unique and non-empty tags.");
                     }
 
-                    await _intentRepository.AddIntents(userId, json.ToString());
+                    await _intentRepository.UpsertOne(userId, json.ToString());
 
                     var intentsObject = await _intentRepository.GetIntents(userId);
                     return Created("/CreateOne", intentsObject);
@@ -107,7 +107,7 @@ namespace ChatbotRestAPI.Controller
         }
 
         [HttpPut]
-        [Route("Update")]
+        [Route("UpdateOne")]
         public async Task<IActionResult> Update(string userId, object json)
         {
             try

@@ -6,7 +6,7 @@ namespace Chatbot.Domain.Ports
 {
     public interface IIntentRepository
     {
-        Task AddIntents(string userId,string json);
+        Task UpsertOne(string userId,string json);
         Task UpsertIntent(string userId, string json);
         Task<IEnumerable<Intent>> GetIntents(string userId);
         Task RemoveIntent(string userId, string tag);
