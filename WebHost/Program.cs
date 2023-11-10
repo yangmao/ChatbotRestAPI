@@ -37,7 +37,7 @@ builder.Services.AddCors(c =>
     c.AddPolicy(corsPolicy,
                      policy =>
                      {
-                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(builder.Configuration["AllowedHosts"], builder.Configuration["ClientPortal"]);
+                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(builder.Configuration["AllowedHost"], builder.Configuration["ClientPortal"]);
                          
                      });
 });
