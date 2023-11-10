@@ -1,61 +1,121 @@
 ﻿using Chatbot.Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Chatbot.Domain.Ports;
 using ChatbotRestAPI.Controller;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Newtonsoft.Json;
+using Xunit;
 using Chatbot.Domain.Interface;
 
-namespace ChatbotRestAPI.Tests
+public class IntentControllerTests
 {
-    public class IntentControllerTests
+    [Fact]
+    public async Task Create_ValidJson_ReturnsCreated()
     {
-        private readonly Mock<ILogger<IntentController>> _loggerMock;
-        private readonly Mock<IIntentRepository> _intentRepositoryMock;
-        private readonly Mock<IJsonValidatorService> _jsonValidatorServiceMock;
+        // Arrange
+        var userId = "testUser";
+        var json = JsonConvert.SerializeObject(new Intent { Tag = "TestTag", Pattern = new List<string>(), Response = new List<string>() });
 
-        public IntentControllerTests()
-        {
-            _loggerMock = new Mock<ILogger<IntentController>>();
-            _intentRepositoryMock = new Mock<IIntentRepository>();
-            _jsonValidatorServiceMock = new Mock<IJsonValidatorService>();
-        }
+        var mockIntentRepository = new Mock<IIntentRepository>();
+        mockIntentRepository.Setup(repo => repo.AddIntents(userId, json))
+                           .Returns(Task.CompletedTask);
+        mockIntentRepository.Setup(repo => repo.GetIntents(userId))
+                           .ReturnsAsync(new List<Intent> { new Intent { Tag = "TestTag", Pattern = new List<string>(), Response = new List<string>() } });
 
-        [Fact]
-        public async Task Create_ValidJson_ReturnsCreated()
-        {
-            // Arrange
-            string userId = "testUserId";
-            string validJson = "{\"key\": \"value\"}";
-            var controller = new IntentController(_intentRepositoryMock.Object, _loggerMock.Object, _jsonValidatorServiceMock.Object);
+        var mockJsonValidatorService = new Mock<IJsonValidatorService>();
+        mockJsonValidatorService.Setup(validator => validator.IsValidJson(It.IsAny<string>()))
+                                .Returns(true);
 
-            _jsonValidatorServiceMock.Setup(j => j.IsValidJson(validJson)).Returns(true);
-            _intentRepositoryMock.Setup(r => r.AddIntents(userId, validJson)).Returns(Task.CompletedTask);
-            _intentRepositoryMock.Setup(r => r.GetIntents(userId)).ReturnsAsync(new List<Intent>());
+        var controller = new IntentController(mockIntentRepository.Object, Mock.Of<ILogger<IntentController>>(), mockJsonValidatorService.Object);
 
-            // Act
-            var result = await controller.Create(userId, validJson);
+        // Act
+        var result = await controller.Create(userId, json);
 
-            // Assert
-            Assert.IsType<CreatedResult>(result);
-        }
-
-        [Fact]
-        public async Task Create_InvalidJson_ReturnsBadRequest()
-        {
-            // Arrange
-            string userId = "testUserId";
-            string invalidJson = "invalid_json";
-            var controller = new IntentController(_intentRepositoryMock.Object, _loggerMock.Object, _jsonValidatorServiceMock.Object);
-
-            _jsonValidatorServiceMock.Setup(j => j.IsValidJson(invalidJson)).Returns(false);
-
-            // Act
-            var result = await controller.Create(userId, invalidJson);
-
-            // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
-        }
-
+        // Assert
+        var createdResult = Assert.IsType<CreatedResult>(result);
+        Assert.Equal("/Create", createdResult.Location);
+        var intentsObject = Assert.IsType<List<Intent>>(createdResult.Value);
+        Assert.Single(intentsObject);
     }
+
+    [Fact]
+    public async Task AddIntent_UniqueTag_ReturnsCreated()
+    {
+        // Arrange
+        var userId = "testUser";
+        var json = JsonConvert.SerializeObject(new Intent { Tag = "NewTag", Pattern = new List<string>(), Response = new List<string>() });
+
+        var mockIntentRepository = new Mock<IIntentRepository>();
+        mockIntentRepository.Setup(repo => repo.GetIntents(userId))
+                           .ReturnsAsync(new List<Intent> { new Intent { Tag = "ExistingTag", Pattern = new List<string>(), Response = new List<string>() } });
+
+        var mockJsonValidatorService = new Mock<IJsonValidatorService>();
+        mockJsonValidatorService.Setup(validator => validator.IsValidJson(It.IsAny<string>()))
+                                .Returns(true);
+
+        var controller = new IntentController(mockIntentRepository.Object, Mock.Of<ILogger<IntentController>>(), mockJsonValidatorService.Object);
+
+        // Act
+        var result = await controller.AddIntent(userId, json);
+
+        // Assert
+        var createdResult = Assert.IsType<CreatedResult>(result);
+        Assert.Equal("/AddIntent", createdResult.Location);
+        var intentsObject = Assert.IsType<List<Intent>>(createdResult.Value);
+        Assert.Single(intentsObject);
+    }
+
+    [Fact]
+    public async Task AddIntentFlow_UniqueTag_ReturnsCreated()
+    {
+        // Arrange
+        var userId = "testUser";
+        var json = JsonConvert.SerializeObject(new Intent { Tag = "NewTag", Pattern = new List<string>(), Response = new List<string>() });
+
+        var mockIntentRepository = new Mock<IIntentRepository>();
+        mockIntentRepository.Setup(repo => repo.GetIntents(userId))
+                           .ReturnsAsync(new List<Intent> { new Intent { Tag = "ExistingTag", Pattern = new List<string>(), Response = new List<string>() } });
+        mockIntentRepository.Setup(repo => repo.AddIntents(userId, json))
+                           .Returns(Task.CompletedTask);
+
+        var mockJsonValidatorService = new Mock<IJsonValidatorService>();
+        mockJsonValidatorService.Setup(validator => validator.IsValidJson(It.IsAny<string>()))
+                                .Returns(true);
+
+        var controller = new IntentController(mockIntentRepository.Object, Mock.Of<ILogger<IntentController>>(), mockJsonValidatorService.Object);
+
+        // Act
+        var result = await controller.AddIntent(userId, json);
+
+        // Assert
+        var createdResult = Assert.IsType<CreatedResult>(result);
+        Assert.Equal("/AddIntent", createdResult.Location);
+        var intentsObject = Assert.IsType<List<Intent>>(createdResult.Value);
+        Assert.Single(intentsObject);
+    }
+
+    [Fact]
+    public async Task UpdateFlow_ReturnsOk()
+    {
+        // Arrange
+        var userId = "testUser";
+        var json = JsonConvert.SerializeObject(new Intent { Tag = "ExistingTag", Pattern = new List<string>(), Response = new List<string>() });
+
+        var mockIntentRepository = new Mock<IIntentRepository>();
+        mockIntentRepository.Setup(repo => repo.UpsertIntent(userId, json))
+                           .Returns(Task.CompletedTask);
+
+        var controller = new IntentController(mockIntentRepository.Object, Mock.Of<ILogger<IntentController>>(), Mock.Of<IJsonValidatorService>());
+
+        // Act
+        var result = await controller.Update(userId, json);
+
+        // Assert
+        Assert.IsType<OkResult>(result);
+    }
+
 }
