@@ -57,7 +57,7 @@ jobs:
             ChatbotMongoDatabaseSettings.ConnectionString: ${{vars.MONGO_CONNECTIONSTRING}}
             ConnectionStrings.SQLConnectionString: ${{vars.SQL_CONNECTIONSTRING}}
             ModelServer: ${{ vars.MODEL_SERVER }}
-            AllowedHost: ${{var.ALLOW_HOST}}
+            AllowedHost: ${{vars.ALLOW_HOST}}
             X-API-KEY: ${{secrets.TEST_API_KEY}}
             
       - name: Build and Push Container
