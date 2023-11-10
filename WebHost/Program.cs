@@ -37,7 +37,7 @@ builder.Services.AddCors(c =>
     c.AddPolicy(corsPolicy,
                      policy =>
                      {
-                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://bqqchatbot.netlify.app", "https://geminibot-free.netlify.app", "https://geminibot-test.netlify.app","https://clientportal-test-muleutm2bq-uc.a.run.app");
+                         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(builder.Configuration["AllowedHosts"], builder.Configuration["ClientPortal"]);
                          
                      });
 });
