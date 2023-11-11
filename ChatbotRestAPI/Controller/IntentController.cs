@@ -47,8 +47,8 @@ namespace ChatbotRestAPI.Controller
         }
 
         [HttpPost]
-        [Route("AddIntent")]
-        public async Task<IActionResult> AddIntent(string userId, object json)
+        [Route("AddOne")]
+        public async Task<IActionResult> Add(string userId, object json)
         {
             try
             {
@@ -61,9 +61,9 @@ namespace ChatbotRestAPI.Controller
                         return BadRequest("Tag must be unique and not empty. Please choose a different tag.");
                     }
 
-                    await _intentRepository.AddIntents(userId, json.ToString());
+                    await _intentRepository.UpsertIntent(userId, json.ToString()); // Call UpsertIntent instead of AddIntents
                     var intentsObject = await _intentRepository.GetIntents(userId);
-                    return Created("/AddIntent", intentsObject);
+                    return Created("/AddOne", intentsObject);
                 }
                 else
                 {
@@ -78,7 +78,7 @@ namespace ChatbotRestAPI.Controller
         }
 
         [HttpPut]
-        [Route("Update")]
+        [Route("UpdateOne")]
         public async Task<IActionResult> Update(string userId, object json)
         {
             try
