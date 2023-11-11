@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Chatbot.Domain.Interface;
+using Chatbot.Domain.Models;
+using Newtonsoft.Json;
 
 namespace ChatbotRestAPI.Controller
 {
@@ -44,13 +46,44 @@ namespace ChatbotRestAPI.Controller
             }
         }
 
-        [HttpPut]
-        [Route("UpsertOne")]
-        public async Task<IActionResult> Upsert(string userId, object json)
+        [HttpPost]
+        [Route("AddOne")]
+        public async Task<IActionResult> Add(string userId, object json)
         {
             try
             {
-                await _intentRepository.UpsertIntent(userId,json.ToString());
+                if (_jsonValidatorService.IsValidJson(json.ToString()))
+                {
+                    var tag = JsonConvert.DeserializeObject<Intent>(json.ToString()).Tag;
+                    var existingIntent = await _intentRepository.GetIntents(userId);
+                    if (existingIntent.Any(x => x.Tag == tag) || string.IsNullOrEmpty(tag))
+                    {
+                        return BadRequest("Tag must be unique and not empty. Please choose a different tag.");
+                    }
+
+                    await _intentRepository.UpsertIntent(userId, json.ToString()); // Call UpsertIntent instead of AddIntents
+                    var intentsObject = await _intentRepository.GetIntents(userId);
+                    return Created("/AddOne", intentsObject);
+                }
+                else
+                {
+                    return BadRequest("Invalid JSON format");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateOne")]
+        public async Task<IActionResult> Update(string userId, object json)
+        {
+            try
+            {
+                await _intentRepository.UpsertIntent(userId, json.ToString());
                 return Ok();
             }
             catch (Exception ex)
