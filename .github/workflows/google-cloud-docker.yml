@@ -14,7 +14,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "test" ]
 
 env:
   PROJECT_ID: ${{ secrets.PROJECT_ID}}
