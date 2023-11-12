@@ -27,7 +27,7 @@ namespace Database.MongoDb.Adapter
         {
             var filter = Builders<IntentCollection>.Filter
                 .Eq(r => r.UserId, userId);
-            await _intentCollection.DeleteManyAsync(filter);
+            //await _intentCollection.DeleteManyAsync(filter);
             await _intentCollection.InsertManyAsync(intents);
         }
 
