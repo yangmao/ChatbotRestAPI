@@ -93,5 +93,21 @@ namespace ChatbotRestAPI.Controller
                 return BadRequest();
             }
         }
+
+        [HttpDelete]
+        [Route("DeleteAll")]
+        public async Task<IActionResult> DeleteAll(string userId)
+        {
+            try
+            {
+                await _intentRepository.RemoveAllIntents(userId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest();
+            }
+        }
     }
 }
