@@ -55,6 +55,14 @@ namespace Database.MongoDb.Adapter
 
             return await _intentCollection.DeleteOneAsync(filter);
         }
-        
+
+        public async Task<DeleteResult> DeleteManyAsync(string userId)
+        {
+            var filter = Builders<IntentCollection>.Filter
+                .Eq(r => r.UserId, userId);
+
+            return await _intentCollection.DeleteManyAsync(filter);
+        }
+
     }
 }

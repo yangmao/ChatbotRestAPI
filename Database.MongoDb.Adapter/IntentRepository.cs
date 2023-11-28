@@ -1,6 +1,7 @@
 ﻿using Chatbot.Domain.Models;
 using Chatbot.Domain.Ports;
 using Database.MongoDb.Adapter.Models;
+using MongoDB.Driver;
 using Newtonsoft.Json;
 
 namespace Database.MongoDb.Adapter
@@ -65,8 +66,10 @@ namespace Database.MongoDb.Adapter
         {
             await _intentContext!.DeleteOneAsync(userId,tag);
         }
+        public async Task RemoveAllIntents(string userId)
+        {
+            await _intentContext!.DeleteManyAsync(userId);
+        }
 
-       
-        
     }
 }

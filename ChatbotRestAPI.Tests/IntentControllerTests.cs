@@ -57,5 +57,56 @@ namespace ChatbotRestAPI.Tests
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        [Fact]
+        public async Task DeleteAll_ReturnsOkResult()
+        {
+            // Arrange
+            var userId = "testUserId";
+            var mockLogger = new Mock<ILogger<IntentController>>();
+            var mockIntentRepository = new Mock<IIntentRepository>();
+
+            var intentController = new IntentController(mockIntentRepository.Object, mockLogger.Object, null);
+
+            // Act
+            var result = await intentController.DeleteAll(userId);
+
+            // Assert
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task DeleteAll_CallsRemoveAllIntents()
+        {
+            // Arrange
+            var userId = "testUserId";
+            var mockLogger = new Mock<ILogger<IntentController>>();
+            var mockIntentRepository = new Mock<IIntentRepository>();
+
+            var intentController = new IntentController(mockIntentRepository.Object, mockLogger.Object, null);
+
+            // Act
+            await intentController.DeleteAll(userId);
+
+            // Assert
+            mockIntentRepository.Verify(x => x.RemoveAllIntents(userId), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteAll_ReturnsBadRequestOnException()
+        {
+            // Arrange
+            var userId = "testUserId";
+            var mockLogger = new Mock<ILogger<IntentController>>();
+            var mockIntentRepository = new Mock<IIntentRepository>();
+            mockIntentRepository.Setup(x => x.RemoveAllIntents(It.IsAny<string>())).ThrowsAsync(new Exception("Test exception"));
+
+            var intentController = new IntentController(mockIntentRepository.Object, mockLogger.Object, null);
+
+            // Act
+            var result = await intentController.DeleteAll(userId);
+
+            // Assert
+            Assert.IsType<BadRequestResult>(result);
+        }
     }
 }
