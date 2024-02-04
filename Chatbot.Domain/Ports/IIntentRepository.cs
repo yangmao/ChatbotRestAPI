@@ -10,6 +10,6 @@ namespace Chatbot.Domain.Ports
         Task UpsertIntent(string userId, string json);
         Task<IEnumerable<Intent>> GetIntents(string userId);
         Task RemoveIntent(string userId, string tag);
-
+        Task RemoveAllIntents(string userId);
     }
 }
